@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Aussprache</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-from:#e8eef5;--bg-to:#dde6f0;
+    --glass:rgba(255,255,255,0.65);--glass2:rgba(255,255,255,0.48);
+    --border:rgba(255,255,255,0.88);--border2:rgba(180,195,215,0.5);
+    --shadow:0 8px 32px rgba(100,120,160,0.13);
+    --ink:#1e2530;--muted:#7a8799;--gold:#b8860b;--gold-bg:rgba(184,134,11,0.09);
+    --green:#2e9e65;--green-bg:rgba(46,158,101,0.12);
+    --red:#c0392b;--red-bg:rgba(192,57,43,0.1);
+    --amber:#c07000;--amber-bg:rgba(192,112,0,0.1);
+    --miss-bg:rgba(120,135,155,0.1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{min-height:100vh;background:linear-gradient(135deg,var(--bg-from) 0%,var(--bg-to) 100%);background-attachment:fixed;font-family:'IBM Plex Sans',sans-serif;color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:40px 20px 80px;}
+  .logo{font-family:'Libre Baskerville',serif;font-size:1.05rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);margin-bottom:4px;}
+  .subtitle{font-size:.68rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:32px;}
+  .card{width:100%;max-width:640px;background:var(--glass);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);margin-bottom:16px;}
+
+  /* Keys */
+  .keys-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;background:none;border:none;padding:0;font-family:inherit;width:100%;}
+  .keys-toggle:hover{color:var(--ink);}
+  .arrow{transition:transform .25s;font-size:.6rem;display:inline-block;}
+  .keys-toggle.open .arrow{transform:rotate(90deg);}
+  .keys-status{margin-left:auto;font-size:.68rem;}
+  .keys-status.ok{color:var(--green);}.keys-status.bad{color:var(--red);}
+  .keys-panel{overflow:hidden;transition:max-height .3s ease;max-height:0;}
+  .keys-panel.open{max-height:400px;}
+  .key-row{margin-top:14px;display:flex;flex-direction:column;gap:5px;}
+  .key-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+  .key-wrap{display:flex;gap:8px;}
+  .key-input{flex:1;background:var(--glass2);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s;}
+  .key-input:focus{border-color:rgba(184,134,11,.4);}
+  .btn-save{padding:9px 16px;border-radius:8px;border:none;background:var(--ink);color:white;font-size:.8rem;font-family:inherit;cursor:pointer;white-space:nowrap;}
+  .btn-save:hover{background:#2d3748;}
+  .key-hint{font-size:.68rem;color:var(--muted);}
+
+  /* Main */
+  .section-label{font-size:.63rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);margin-bottom:9px;}
+  textarea{width:100%;background:var(--glass2);backdrop-filter:blur(8px);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;font-family:'Libre Baskerville',serif;font-size:1.08rem;color:var(--ink);resize:vertical;min-height:90px;outline:none;transition:border-color .2s;line-height:1.65;}
+  textarea::placeholder{color:var(--muted);font-style:italic;}
+  textarea:focus{border-color:rgba(184,134,11,.4);box-shadow:0 0 0 3px rgba(184,134,11,.08);}
+  .char-btns{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;align-items:center;}
+  .char-hint-lbl{font-size:.68rem;color:var(--muted);margin-right:2px;}
+  .char-btn{background:var(--glass2);border:1px solid var(--border2);border-radius:7px;color:var(--ink);font-family:'Libre Baskerville',serif;font-size:.9rem;padding:4px 10px;cursor:pointer;transition:all .15s;}
+  .char-btn:hover{border-color:rgba(184,134,11,.5);color:var(--gold);}
+  .option-row{display:flex;align-items:center;gap:12px;margin-top:14px;}
+  .option-row label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;}
+  select{flex:1;background:var(--glass2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;cursor:pointer;}
+  input[type=range]{flex:1;accent-color:var(--gold);cursor:pointer;}
+  .speed-val{font-size:.78rem;color:var(--gold);font-weight:600;width:36px;text-align:right;}
+  .btn{width:100%;padding:13px;border-radius:11px;border:1px solid transparent;font-family:'IBM Plex Sans',sans-serif;font-size:.86rem;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .btn-tts{background:var(--glass2);border-color:var(--border2);color:var(--ink);}
+  .btn-tts:not(:disabled):hover{border-color:rgba(184,134,11,.4);background:var(--gold-bg);}
+  .btn-tts.stopping{background:var(--amber-bg);border-color:rgba(192,112,0,.4);color:var(--amber);}
+  .btn-rec{background:var(--ink);color:#fff;font-weight:600;box-shadow:0 4px 14px rgba(30,37,48,.18);}
+  .btn-rec:not(:disabled):hover{background:#2d3748;}
+  .btn-rec.recording{background:var(--red);animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.72}}
+  .status{font-size:.78rem;color:var(--muted);text-align:center;min-height:22px;margin-top:10px;line-height:1.5;word-break:break-word;}
+  .status.err{color:var(--red);}
+
+  /* Results */
+  hr{border:none;border-top:1px solid var(--border2);margin:24px 0;}
+  .results{display:none;}.results.on{display:block;}
+  .score-row{display:flex;align-items:center;gap:18px;margin-bottom:18px;}
+  .overall-num{font-family:'Libre Baskerville',serif;font-size:4rem;font-weight:700;line-height:1;min-width:84px;}
+  .overall-num.high{color:var(--green);}.overall-num.mid{color:var(--amber);}.overall-num.low{color:var(--red);}
+  .score-meta{flex:1;}
+  .score-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:4px;}
+  .score-cmt{font-size:.9rem;color:var(--ink);}
+  .bars{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+  .bar-row{display:grid;grid-template-columns:52px 1fr 30px;align-items:center;gap:10px;font-size:.75rem;}
+  .bar-lbl{color:var(--muted);}
+  .bar-track{height:5px;background:rgba(120,135,155,.15);border-radius:3px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1);}
+  .bar-fill.high{background:var(--green);}.bar-fill.mid{background:var(--amber);}.bar-fill.low{background:var(--red);}
+  .bar-num{color:var(--ink);font-weight:500;text-align:right;}
+
+  /* Word chips */
+  .word-sec{margin-bottom:20px;}
+  .word-sec-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:8px;}
+  .legend{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:.68rem;color:var(--muted);}
+  .ldot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{padding:6px 13px;border-radius:8px;font-family:'Libre Baskerville',serif;font-size:.95rem;border:1px solid transparent;cursor:default;position:relative;}
+  .chip .chip-score{position:absolute;top:-8px;right:2px;font-size:.58rem;font-family:'IBM Plex Sans',sans-serif;font-weight:600;opacity:.8;}
+  .chip.high{background:var(--green-bg);border-color:rgba(46,158,101,.3);color:var(--green);}
+  .chip.mid {background:var(--amber-bg);border-color:rgba(192,112,0,.25);color:var(--amber);}
+  .chip.low {background:var(--red-bg);  border-color:rgba(192,57,43,.25); color:var(--red);}
+  .chip.miss{background:var(--miss-bg); border-color:rgba(120,135,155,.2);color:var(--muted);text-decoration:line-through;}
+
+  /* Playback */
+  .pb-box{background:var(--glass2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px;}
+  .pb-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px;}
+  .pb-text{font-family:'Libre Baskerville',serif;font-size:.9rem;font-style:italic;color:var(--ink);word-break:break-word;margin-bottom:12px;line-height:1.6;}
+  .btn-pb{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s;}
+  .btn-pb.ready  {border-color:rgba(184,134,11,.45);color:var(--gold);background:var(--gold-bg);}
+  .btn-pb.playing{border-color:rgba(192,57,43,.45); color:var(--red); background:var(--red-bg);}
+  .btn-pb:disabled{opacity:.35;cursor:default;}
+  .retry-row{display:flex;gap:8px;}
+  .btn-sm{padding:8px 15px;border-radius:8px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;cursor:pointer;transition:all .15s;}
+  .btn-sm:hover{border-color:rgba(184,134,11,.4);color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="logo">Deutsch Aussprache</div>
+<div class="subtitle">德语发音练习</div>
+
+<!-- API Settings -->
+<div class="card">
+  <button class="keys-toggle" id="keys-toggle" onclick="toggleKeys()">
+    <span class="arrow">▶</span>
+    API 设置
+    <span class="keys-status bad" id="keys-status">未配置</span>
+  </button>
+  <div class="keys-panel" id="keys-panel">
+    <div class="key-row">
+      <div class="key-label">Azure Speech Key <span style="color:var(--red)">*</span></div>
+      <div class="key-wrap">
+        <input class="key-input" type="password" id="az-key" placeholder="32位字符">
+        <button class="btn-save" onclick="saveKeys()">保存</button>
+      </div>
+      <div class="key-hint">Azure Portal → 你的语音服务 → Keys and Endpoint → Key 1</div>
+    </div>
+    <div class="key-row">
+      <div class="key-label">Azure Region <span style="color:var(--red)">*</span></div>
+      <div class="key-wrap">
+        <input class="key-input" type="text" id="az-region" value="eastasia">
+      </div>
+      <div class="key-hint">例如：eastasia / eastus / westeurope</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="card">
+  <div class="section-label">输入德语句子</div>
+  <textarea id="input" rows="3" placeholder="Hallo, wie geht's Ihnen?"></textarea>
+  <div class="char-btns">
+    <span class="char-hint-lbl">插入：</span>
+    <button class="char-btn" onclick="ins('ä')">ä</button>
+    <button class="char-btn" onclick="ins('ö')">ö</button>
+    <button class="char-btn" onclick="ins('ü')">ü</button>
+    <button class="char-btn" onclick="ins('Ä')">Ä</button>
+    <button class="char-btn" onclick="ins('Ö')">Ö</button>
+    <button class="char-btn" onclick="ins('Ü')">Ü</button>
+    <button class="char-btn" onclick="ins('ß')">ß</button>
+  </div>
+  <div class="option-row">
+    <label>音色</label>
+    <select id="voice-select">
+      <option value="de-DE-KatjaNeural">Katja（女，德国）</option>
+      <option value="de-DE-ConradNeural">Conrad（男，德国）</option>
+      <option value="de-DE-AmalaNeural">Amala（女，德国）</option>
+      <option value="de-DE-BerndNeural">Bernd（男，德国）</option>
+      <option value="de-DE-ChristophNeural">Christoph（男，德国）</option>
+      <option value="de-DE-ElkeNeural">Elke（女，德国）</option>
+      <option value="de-AT-IngridNeural">Ingrid（女，奥地利）</option>
+      <option value="de-CH-LeniNeural">Leni（女，瑞士）</option>
+    </select>
+  </div>
+  <div class="option-row">
+    <label>语速</label>
+    <input type="range" min="-30" max="20" step="5" value="-10"
+      oninput="ttsRate=+this.value;document.getElementById('sv').textContent=(ttsRate>=0?'+':'')+ttsRate+'%'">
+    <span class="speed-val" id="sv">-10%</span>
+  </div>
+
+  <button class="btn btn-tts" id="btn-tts" onclick="toggleTTS()">▶ 播放发音</button>
+  <button class="btn btn-rec" id="btn-rec" onclick="toggleRec()">🎤 开始跟读</button>
+  <div class="status" id="status"></div>
+
+  <div class="results" id="results">
+    <hr>
+    <div class="score-row">
+      <div class="overall-num" id="overall-num">—</div>
+      <div class="score-meta">
+        <div class="score-lbl">综合评分</div>
+        <div class="score-cmt" id="score-cmt">—</div>
+      </div>
+    </div>
+    <div class="bars">
+      <div class="bar-row"><span class="bar-lbl">准确度</span><div class="bar-track"><div class="bar-fill" id="b-acc" style="width:0"></div></div><span class="bar-num" id="n-acc">—</span></div>
+      <div class="bar-row"><span class="bar-lbl">流利度</span><div class="bar-track"><div class="bar-fill" id="b-flu" style="width:0"></div></div><span class="bar-num" id="n-flu">—</span></div>
+      <div class="bar-row"><span class="bar-lbl">完整度</span><div class="bar-track"><div class="bar-fill" id="b-comp" style="width:0"></div></div><span class="bar-num" id="n-comp">—</span></div>
+      <div class="bar-row"><span class="bar-lbl">韵律</span><div class="bar-track"><div class="bar-fill" id="b-pros" style="width:0"></div></div><span class="bar-num" id="n-pros">—</span></div>
+    </div>
+    <div class="word-sec">
+      <div class="word-sec-lbl">逐词分析</div>
+      <div class="legend">
+        <div class="legend-item"><div class="ldot" style="background:var(--green)"></div>发音正确 ≥75</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--amber)"></div>接近 50-74</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--red)"></div>需改进 &lt;50</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--muted)"></div>未说出</div>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="pb-box">
+      <div class="pb-lbl">识别到您说的是</div>
+      <div class="pb-text" id="pb-text">—</div>
+      <button class="btn-pb" id="btn-pb" onclick="togglePB()" disabled>▶ 回放录音</button>
+    </div>
+    <div class="retry-row">
+      <button class="btn-sm" onclick="replayTTS()">▶ 再听标准音</button>
+      <button class="btn-sm" onclick="retryRec()">🎤 再试一次</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Keys ──────────────────────────────────────────
+const K={AZ:'de_az_key',RG:'de_az_region'};
+
+function loadKeys(){
+  const az=localStorage.getItem(K.AZ)||'';
+  const rg=localStorage.getItem(K.RG)||'eastasia';
+  if(az) document.getElementById('az-key').value=az;
+  document.getElementById('az-region').value=rg;
+  refreshStatus();
+}
+
+function saveKeys(){
+  const az=document.getElementById('az-key').value.trim();
+  const rg=document.getElementById('az-region').value.trim().toLowerCase()||'eastasia';
+  localStorage.setItem(K.AZ,az);
+  localStorage.setItem(K.RG,rg);
+  document.getElementById('keys-panel').classList.remove('open');
+  document.getElementById('keys-toggle').classList.remove('open');
+  refreshStatus();
+  if(!az) alert('请填写 Azure Key');
+}
+
+function getAZKey()   {return localStorage.getItem(K.AZ)||document.getElementById('az-key').value.trim();}
+function getAZRegion(){return (localStorage.getItem(K.RG)||document.getElementById('az-region').value.trim()||'eastasia').toLowerCase();}
+
+function refreshStatus(){
+  const ok=getAZKey()&&getAZRegion();
+  const s=document.getElementById('keys-status');
+  s.textContent=ok?'✓ 已配置':'未配置';
+  s.className='keys-status '+(ok?'ok':'bad');
+}
+
+function toggleKeys(){
+  const p=document.getElementById('keys-panel'),b=document.getElementById('keys-toggle');
+  const opening=!p.classList.contains('open');
+  p.classList.toggle('open',opening);
+  b.classList.toggle('open',opening);
+}
+
+// ── State ─────────────────────────────────────────
+let ttsRate=-10,ttsAudio=null,isTTSOn=false;
+let micStream=null,mediaRec=null,isRec=false;
+let audioChunks=[],recBlob=null,pbAudio=null;
+
+// ── Helpers ───────────────────────────────────────
+function ins(c){
+  const ta=document.getElementById('input');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.slice(0,s)+c+ta.value.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+1;ta.focus();
+}
+function setStatus(m,err){
+  const el=document.getElementById('status');
+  el.textContent=m;el.className='status'+(err?' err':'');
+}
+function colorOf(v){return v>=75?'high':v>=50?'mid':'low';}
+function commentOf(v){
+  if(v>=90)return '非常出色，接近母语水平！';
+  if(v>=75)return '发音良好，继续保持';
+  if(v>=55)return '基本正确，还有提升空间';
+  return '需要多练习，别灰心';
+}
+
+// ── Azure TTS ─────────────────────────────────────
+async function getToken(key,region){
+  const r=await fetch(`https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
+    {method:'POST',headers:{'Ocp-Apim-Subscription-Key':key}});
+  if(!r.ok) throw new Error('Azure Key 或 Region 有误');
+  return r.text();
+}
+
+async function azureTTS(text,voice,rate,key,region){
+  const token=await getToken(key,region);
+  const rateStr=(rate>=0?'+':'')+rate+'%';
+  const esc=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const ssml=`<speak version='1.0' xml:lang='de-DE'><voice name='${voice}'><prosody rate='${rateStr}'>${esc}</prosody></voice></speak>`;
+  const r=await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`,{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+token,'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'audio-24khz-96kbitrate-mono-mp3'},
+    body:ssml
+  });
+  if(!r.ok) throw new Error('TTS 失败：'+r.status);
+  return r.blob();
+}
+
+function toggleTTS(){isTTSOn?stopTTS():playTTS();}
+
+async function playTTS(){
+  const text=document.getElementById('input').value.trim();
+  if(!text){setStatus('请先输入德语句子');return;}
+  const key=getAZKey(),region=getAZRegion();
+  if(!key){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);return;}
+  stopTTS();
+  const btn=document.getElementById('btn-tts');
+  btn.textContent='⏳ 加载中…';btn.disabled=true;
+  try{
+    const blob=await azureTTS(text,document.getElementById('voice-select').value,ttsRate,key,region);
+    const url=URL.createObjectURL(blob);
+    ttsAudio=new Audio(url);isTTSOn=true;
+    btn.textContent='⏹ 停止播放';btn.disabled=false;btn.classList.add('stopping');
+    ttsAudio.onended=ttsAudio.onerror=()=>{URL.revokeObjectURL(url);resetTTSBtn();};
+    ttsAudio.play();
+  }catch(e){setStatus('TTS 出错：'+e.message,true);resetTTSBtn();}
+}
+
+function stopTTS(){if(ttsAudio){ttsAudio.pause();ttsAudio.src='';ttsAudio=null;}resetTTSBtn();}
+function resetTTSBtn(){isTTSOn=false;const b=document.getElementById('btn-tts');b.textContent='▶ 播放发音';b.disabled=false;b.classList.remove('stopping');}
+function replayTTS(){stopTTS();setTimeout(playTTS,60);}
+
+// ── Mic ───────────────────────────────────────────
+async function ensureMic(){
+  if(micStream&&micStream.active)return micStream;
+  micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+  return micStream;
+}
+
+// ── Record ────────────────────────────────────────
+function toggleRec(){isRec?stopRec():startRec();}
+
+async function startRec(){
+  const target=document.getElementById('input').value.trim();
+  if(!target){setStatus('请先输入德语句子');return;}
+  const key=getAZKey();
+  if(!key){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);return;}
+  stopTTS();
+  let stream;
+  try{stream=await ensureMic();}
+  catch(e){setStatus('⚠️ 无法访问麦克风',true);return;}
+
+  if(mediaRec&&mediaRec.state!=='inactive'){try{mediaRec.stop();}catch(e){}}
+  audioChunks=[];recBlob=null;setPB('idle');
+
+  const mime=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':
+             MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':
+             MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'';
+  try{
+    mediaRec=new MediaRecorder(stream,mime?{mimeType:mime}:{});
+    mediaRec.ondataavailable=e=>{if(e.data&&e.data.size>0)audioChunks.push(e.data);};
+    mediaRec.start(500);
+  }catch(e){setStatus('录音初始化失败',true);return;}
+
+  isRec=true;
+  const btn=document.getElementById('btn-rec');
+  btn.textContent='⏹ 停止录音';btn.classList.add('recording');
+  setStatus('🎙 录音中… 读完后点"停止录音"');
+  document.getElementById('results').classList.remove('on');
+}
+
+async function stopRec(){
+  if(!isRec)return;
+  isRec=false;
+  const btn=document.getElementById('btn-rec');
+  btn.textContent='🎤 开始跟读';btn.classList.remove('recording');
+  btn.disabled=true;
+
+  await new Promise(resolve=>{
+    if(!mediaRec||mediaRec.state==='inactive'){resolve();return;}
+    mediaRec.onstop=()=>{
+      if(audioChunks.length>0){
+        recBlob=new Blob(audioChunks,{type:mediaRec.mimeType||'audio/webm'});
+        setPB('ready');
+      }
+      resolve();
+    };
+    try{mediaRec.stop();}catch(e){resolve();}
+  });
+
+  if(!recBlob){setStatus('没有录到声音，请重试');btn.disabled=false;return;}
+  // Ensure playback button is enabled regardless of assessment result
+  setPB('ready');
+  setStatus('⏳ 正在评估发音…');
+
+  try{
+    const target=document.getElementById('input').value.trim();
+    const result=await azurePronAssess(recBlob,target);
+    setStatus('');
+    showResults(result);
+  }catch(e){
+    setStatus('评估出错：'+e.message,true);
+  }
+  btn.disabled=false;
+}
+
+// ── WAV conversion ───────────────────────────────────
+async function convertToWav(blob) {
+  const arrayBuf = await blob.arrayBuffer();
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+  
+  let decoded;
+  try {
+    decoded = await audioCtx.decodeAudioData(arrayBuf);
+  } catch(e) {
+    // If decode fails, try sending raw — Azure might still accept it
+    audioCtx.close();
+    return arrayBuf;
+  }
+  
+  // Resample to 16kHz mono (Azure requirement)
+  const sampleRate = 16000;
+  const numChannels = 1;
+  const offCtx = new OfflineAudioContext(numChannels, Math.ceil(decoded.duration * sampleRate), sampleRate);
+  const src = offCtx.createBufferSource();
+  src.buffer = decoded;
+  src.connect(offCtx.destination);
+  src.start(0);
+  const rendered = await offCtx.startRendering();
+  audioCtx.close();
+  
+  // Encode as 16-bit PCM WAV
+  const pcmData = rendered.getChannelData(0);
+  const numSamples = pcmData.length;
+  const wavBuf = new ArrayBuffer(44 + numSamples * 2);
+  const view = new DataView(wavBuf);
+  
+  function writeStr(offset, str) {
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  }
+  
+  writeStr(0, 'RIFF');
+  view.setUint32(4, 36 + numSamples * 2, true);
+  writeStr(8, 'WAVE');
+  writeStr(12, 'fmt ');
+  view.setUint32(16, 16, true);         // chunk size
+  view.setUint16(20, 1, true);          // PCM format
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true); // byte rate
+  view.setUint16(32, 2, true);          // block align
+  view.setUint16(34, 16, true);         // bits per sample
+  writeStr(36, 'data');
+  view.setUint32(40, numSamples * 2, true);
+  
+  // Write PCM samples
+  let offset = 44;
+  for (let i = 0; i < numSamples; i++) {
+    const s = Math.max(-1, Math.min(1, pcmData[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    offset += 2;
+  }
+  
+  return wavBuf;
+}
+
+// ── Azure Pronunciation Assessment (REST) ─────────
+async function azurePronAssess(blob,text){
+  const key=getAZKey(),region=getAZRegion();
+
+  // Pronunciation assessment config
+  const config={
+    ReferenceText: text,
+    GradingSystem: 'HundredMark',
+    Dimension: 'Comprehensive',
+    EnableMiscue: true
+  };
+  const configB64=btoa(unescape(encodeURIComponent(JSON.stringify(config))));
+
+  // Convert to 16kHz mono WAV
+  const wavBuf = await convertToWav(blob);
+
+  // Use Ocp-Apim-Subscription-Key directly (more reliable than Bearer token)
+  const resp=await fetch(
+    `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=de-DE&format=detailed`,
+    {
+      method:'POST',
+      headers:{
+        'Ocp-Apim-Subscription-Key': key,
+        'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
+        'Pronunciation-Assessment': configB64,
+        'Accept': 'application/json'
+      },
+      body: wavBuf
+    }
+  );
+
+  if(!resp.ok){
+    const txt=await resp.text();
+    throw new Error('Azure 返回 '+resp.status+': '+txt.slice(0,300));
+  }
+
+  const data=await resp.json();
+  console.log('Azure raw response:', JSON.stringify(data, null, 2));
+  return parsePronResult(data,text);
+}
+
+function parsePronResult(data,refText){
+  const best = data?.NBest?.[0];
+  if(!best) throw new Error('未收到有效结果，请重试');
+
+  const words = best.Words || [];
+  const recognized = (best.Display || best.DisplayText || words.map(w=>w.Word).join(' ')).trim();
+
+  return {
+    accuracyScore:     Math.round(best.AccuracyScore     || 0),
+    fluencyScore:      Math.round(best.FluencyScore      || 0),
+    completenessScore: Math.round(best.CompletenessScore || 0),
+    prosodyScore:      Math.round(best.PronScore         || 0),
+    overallScore:      Math.round(best.PronScore         || best.AccuracyScore || 0),
+    recognized,
+    words: words.map(w=>({
+      word:  w.Word  || '',
+      score: Math.round(w.AccuracyScore || 0),
+      error: w.ErrorType || 'None'
+    }))
+  };
+}
+
+// ── Show Results ──────────────────────────────────
+function showResults(r){
+  document.getElementById('results').classList.add('on');
+
+  const on=document.getElementById('overall-num');
+  on.textContent=r.overallScore;
+  on.className='overall-num '+colorOf(r.overallScore);
+  document.getElementById('score-cmt').textContent=commentOf(r.overallScore);
+
+  setBar('acc', r.accuracyScore);
+  setBar('flu', r.fluencyScore);
+  setBar('comp',r.completenessScore);
+  setBar('pros',r.prosodyScore);
+
+  // Word chips — use Azure's word-level scores
+  const chips=document.getElementById('chips');
+  chips.innerHTML='';
+
+  if(r.words&&r.words.length>0){
+    r.words.forEach(w=>{
+      const s=w.score;
+      const isMissed=w.error==='Omission';
+      const cls=isMissed?'miss':colorOf(s);
+      const c=document.createElement('span');
+      c.className='chip '+cls;
+      c.innerHTML=w.word+'<span class="chip-score">'+s+'</span>';
+      c.title=w.error!=='None'?'错误类型：'+w.error:'得分：'+s;
+      chips.appendChild(c);
+    });
+  }
+
+  // Recognized text
+  document.getElementById('pb-text').textContent=r.recognized?'"'+r.recognized+'"':'（未识别到文字）';
+}
+
+function setBar(id,val){
+  const f=document.getElementById('b-'+id),n=document.getElementById('n-'+id);
+  if(f){f.style.width=val+'%';f.className='bar-fill '+colorOf(val);}
+  if(n)n.textContent=val;
+}
+
+function retryRec(){
+  isRec=false;
+  document.getElementById('btn-rec').disabled=false;
+  document.getElementById('results').classList.remove('on');
+  setStatus('');
+  setTimeout(startRec,100);
+}
+
+// ── Playback ──────────────────────────────────────
+function setPB(state){
+  const b=document.getElementById('btn-pb');if(!b)return;
+  if(state==='idle')   {b.disabled=true; b.className='btn-pb';        b.textContent='▶ 回放录音';}
+  if(state==='ready')  {b.disabled=false;b.className='btn-pb ready';  b.textContent='▶ 回放录音';}
+  if(state==='playing'){b.disabled=false;b.className='btn-pb playing'; b.textContent='⏹ 停止回放';}
+}
+function togglePB(){
+  if(!recBlob)return;
+  if(pbAudio&&!pbAudio.paused){stopPB();return;}
+  setPB('playing');
+  const url=URL.createObjectURL(recBlob);
+  pbAudio=new Audio(url);
+  pbAudio.oncanplay=()=>pbAudio.play().catch(stopPB);
+  pbAudio.onended=pbAudio.onerror=()=>{URL.revokeObjectURL(url);setPB('ready');pbAudio=null;};
+  pbAudio.load();
+}
+function stopPB(){
+  if(pbAudio){pbAudio.pause();pbAudio.src='';pbAudio=null;}
+  setPB(recBlob?'ready':'idle');
+}
+
+// ── Init ──────────────────────────────────────────
+loadKeys();
+</script>
+</body>
+</html>
