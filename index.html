@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<link rel="apple-touch-icon" href="icon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Deutsch Aussprache</title>
@@ -209,6 +208,7 @@
       <div class="pb-lbl">识别到您说的是</div>
       <div class="pb-text" id="pb-text">—</div>
       <button class="btn-pb" id="btn-pb" onclick="togglePB()" disabled>▶ 回放录音</button>
+      <button class="btn-pb" id="btn-dl" onclick="downloadRec()" disabled style="margin-left:8px">↓ 下载录音</button>
     </div>
     <div class="retry-row">
       <button class="btn-sm" onclick="replayTTS()">▶ 再听标准音</button>
@@ -576,9 +576,10 @@ function retryRec(){
 // ── Playback ──────────────────────────────────────
 function setPB(state){
   const b=document.getElementById('btn-pb');if(!b)return;
-  if(state==='idle')   {b.disabled=true; b.className='btn-pb';        b.textContent='▶ 回放录音';}
-  if(state==='ready')  {b.disabled=false;b.className='btn-pb ready';  b.textContent='▶ 回放录音';}
-  if(state==='playing'){b.disabled=false;b.className='btn-pb playing'; b.textContent='⏹ 停止回放';}
+  const dl=document.getElementById('btn-dl');
+  if(state==='idle')   {b.disabled=true; b.className='btn-pb';        b.textContent='▶ 回放录音'; if(dl)dl.disabled=true;}
+  if(state==='ready')  {b.disabled=false;b.className='btn-pb ready';  b.textContent='▶ 回放录音'; if(dl)dl.disabled=false;}
+  if(state==='playing'){b.disabled=false;b.className='btn-pb playing'; b.textContent='⏹ 停止回放'; if(dl)dl.disabled=false;}
 }
 function togglePB(){
   if(!recBlob)return;
@@ -593,6 +594,20 @@ function togglePB(){
 function stopPB(){
   if(pbAudio){pbAudio.pause();pbAudio.src='';pbAudio=null;}
   setPB(recBlob?'ready':'idle');
+}
+
+function downloadRec(){
+  if(!recBlob) return;
+  const url = URL.createObjectURL(recBlob);
+  const a = document.createElement('a');
+  const now = new Date();
+  const ts = now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')+'_'+now.getHours().toString().padStart(2,'0')+now.getMinutes().toString().padStart(2,'0');
+  a.href = url;
+  a.download = 'deutsch_'+ts+'.webm';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 
 // ── Init ──────────────────────────────────────────
