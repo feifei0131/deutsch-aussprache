@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure 申请指南 · 德语发音练习 App</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --ink: #1a1a1a;
+    --muted: #888580;
+    --accent: #2d5a8e;
+    --accent-light: #eef3f9;
+    --green: #2e7d52;
+    --green-bg: #eef6f1;
+    --amber: #92600a;
+    --amber-bg: #fdf4e3;
+    --red: #b5343a;
+    --red-bg: #fdf0f0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  .header {
+    background: var(--accent);
+    color: white;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .header p {
+    font-size: 0.88rem;
+    opacity: 0.82;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Content */
+  .content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Summary box */
+  .summary {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 22px;
+    margin: 32px 0 24px;
+  }
+
+  .summary-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 0.88rem;
+  }
+
+  .summary-item .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  /* Section */
+  .section {
+    margin: 36px 0;
+  }
+
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p { margin-bottom: 12px; color: #333; }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .step-num {
+    width: 24px; height: 24px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-content { flex: 1; }
+  .step-title { font-weight: 500; font-size: 0.9rem; margin-bottom: 3px; }
+  .step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+  code {
+    background: #f0ede8;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 0.82em;
+    color: var(--accent);
+  }
+
+  /* Notice boxes */
+  .notice {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.87rem;
+    line-height: 1.7;
+  }
+
+  .notice-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .notice.green { background: var(--green-bg); border-left: 3px solid var(--green); }
+  .notice.green .notice-title { color: var(--green); }
+  .notice.amber { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+  .notice.amber .notice-title { color: var(--amber); }
+  .notice.red   { background: var(--red-bg);   border-left: 3px solid var(--red); }
+  .notice.red   .notice-title { color: var(--red); }
+  .notice.blue  { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .notice.blue  .notice-title { color: var(--accent); }
+
+  /* Price table */
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.86rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .price-table th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.82rem;
+  }
+
+  .price-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .price-table tr:last-child td { border-bottom: none; }
+  .price-table tr:nth-child(even) td { background: #faf9f6; }
+
+  .tag-free {
+    display: inline-block;
+    background: var(--green-bg);
+    color: var(--green);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .tag-paid {
+    display: inline-block;
+    background: var(--amber-bg);
+    color: var(--amber);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Why section cards */
+  .why-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0;
+  }
+
+  .why-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .why-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+  }
+
+  .why-content { flex: 1; }
+  .why-title { font-weight: 500; font-size: 0.9rem; margin-bottom: 3px; }
+  .why-desc { font-size: 0.83rem; color: var(--muted); margin: 0; line-height: 1.6; }
+
+  /* Comparison */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+
+  .compare-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.84rem;
+  }
+
+  .compare-card.bad {
+    background: var(--red-bg);
+    border: 1px solid rgba(181,52,58,0.2);
+  }
+
+  .compare-card.good {
+    background: var(--green-bg);
+    border: 1px solid rgba(46,125,82,0.2);
+  }
+
+  .compare-label {
+    font-weight: 600;
+    font-size: 0.78rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .compare-card.bad .compare-label { color: var(--red); }
+  .compare-card.good .compare-label { color: var(--green); }
+
+  .compare-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .compare-card li { line-height: 1.5; color: #444; }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-q {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .faq-a {
+    font-size: 0.86rem;
+    color: #555;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding: 24px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.4rem; }
+    .compare-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">使用指南</div>
+  <h1>如何申请 Azure API<br>开始使用德语发音练习</h1>
+  <p>本文档帮助你快速完成 Azure 账号注册，全程约 10 分钟，完全免费</p>
+</div>
+
+<div class="content">
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="summary-title">📋 申请前先了解</div>
+    <div class="summary-items">
+      <div class="summary-item"><div class="dot"></div><span>需要一个邮箱和一张 <strong>Visa / Mastercard 信用卡</strong>（验证身份用，<strong>不扣费</strong>）</span></div>
+      <div class="summary-item"><div class="dot"></div><span>每月有 <strong>永久免费额度</strong>，日常练习完全够用</span></div>
+      <div class="summary-item"><div class="dot"></div><span>可以设置消费上限为 $0，<strong>绝对不会意外扣费</strong></span></div>
+      <div class="summary-item"><div class="dot"></div><span>国内网络一般可以直接访问，部分地区可能需要翻墙</span></div>
+    </div>
+  </div>
+
+  <!-- Why Azure -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">①</span>
+      为什么这个 App 需要 Azure？
+    </div>
+
+    <p>很多人会问：为什么不用国内的语音服务？这是因为德语发音评估是一个非常专业的功能，目前国内平台（讯飞、阿里云、腾讯云等）<strong>均不支持德语</strong>，只有中文和英文。</p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <div class="why-content">
+          <div class="why-title">发音评估（核心功能）</div>
+          <div class="why-desc">你跟读后，系统分析你每个词的发音准确度，给出 0-100 分，标出哪个词需要改进。这需要 Azure 的 Pronunciation Assessment 技术，国内无替代品。</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔊</div>
+        <div class="why-content">
+          <div class="why-title">德语标准发音播放（TTS）</div>
+          <div class="why-desc">播放发音时用的是 Azure 的德国母语 Neural 声音（Katja、Conrad 等），语调自然，是真正的德语母语发音，不是机器人声。</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌍</div>
+        <div class="why-content">
+          <div class="why-title">为什么是微软 Azure？</div>
+          <div class="why-desc">微软在语音技术上深耕多年，德语是其重点支持语言之一。Azure Speech 是目前对非英语发音评估最准确的商业 API，连 Duolingo 等学习 App 背后也在用类似技术。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-row">
+      <div class="compare-card bad">
+        <div class="compare-label">✗ 国内平台</div>
+        <ul>
+          <li>不支持德语发音评估</li>
+          <li>德语 TTS 质量较差</li>
+          <li>申请简单但功能不够</li>
+        </ul>
+      </div>
+      <div class="compare-card good">
+        <div class="compare-label">✓ Azure</div>
+        <ul>
+          <li>德语发音评估精准</li>
+          <li>母语级 Neural TTS</li>
+          <li>每月免费额度充足</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cost -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">②</span>
+      费用说明
+    </div>
+
+    <p>Azure Speech 服务有<strong>永久免费层（F0）</strong>，不是试用，是长期有效的免费额度：</p>
+
+    <table class="price-table">
+      <tr>
+        <th>功能</th>
+        <th>每月免费额度</th>
+        <th>够用吗？</th>
+      </tr>
+      <tr>
+        <td>德语 TTS（播放发音）</td>
+        <td><span class="tag-free">免费</span> 50万字符</td>
+        <td>可播放约 2 万句话，完全够</td>
+      </tr>
+      <tr>
+        <td>发音评估（跟读打分）</td>
+        <td><span class="tag-free">免费</span> 5 小时音频</td>
+        <td>每天练习 10 分钟可用 30 天</td>
+      </tr>
+      <tr>
+        <td>超出免费额度</td>
+        <td><span class="tag-paid">付费</span> 约 $1/小时</td>
+        <td>日常练习几乎不会超出</td>
+      </tr>
+    </table>
+
+    <div class="notice green">
+      <div class="notice-title">✅ 关于信用卡</div>
+      注册时需要绑定 Visa 或 Mastercard 信用卡，但这只是<strong>身份验证</strong>用途。只要你设置消费上限为 $0（下方有教程），账单绝对不会产生任何费用。Azure 明确承诺免费额度内不扣费。
+    </div>
+
+    <div class="notice amber">
+      <div class="notice-title">⚠️ 银联卡无法使用</div>
+      目前 Azure 国际版只接受 Visa 或 Mastercard，不接受银联卡。如果你没有这两种卡，可以考虑办一张招商银行或工商银行的双币信用卡。
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">③</span>
+      申请步骤（约 10 分钟）
+    </div>
+
+    <p><strong>第一步：注册 Azure 账号</strong></p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">打开 Azure 官网</div>
+          <div class="step-desc">访问 <a href="https://portal.azure.com" target="_blank">portal.azure.com</a>，点击"免费开始"或"Try Azure for free"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">选择 "Azure free account"</div>
+          <div class="step-desc">右侧选项，点击 "Try Azure for free"，有 $200 免费额度（30天）+ 永久免费服务</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">注册微软账号</div>
+          <div class="step-desc">用邮箱注册或登录已有微软账号（Outlook、Hotmail 均可）</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">填写个人信息和信用卡</div>
+          <div class="step-desc">填写姓名、地址，绑定 Visa/Mastercard。系统会验证扣 $1 然后退回，这是正常流程</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px"><strong>第二步：创建语音服务</strong></p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">进入 Azure Portal</div>
+          <div class="step-desc">登录后在顶部搜索栏输入 <code>Speech</code>，选择 "Speech services"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">创建新资源</div>
+          <div class="step-desc">点击"创建"，填写名称（随意，如 <code>my-speech</code>），区域选 <code>East Asia</code>（香港，延迟低）</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">选择免费层</div>
+          <div class="step-desc">Pricing tier 一定选 <code>Free F0</code>，这是永久免费的层级</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">点击创建，等待约 1 分钟</div>
+          <div class="step-desc">创建完成后进入资源，左侧菜单点 "Keys and Endpoint"，复制 <strong>Key 1</strong> 和 <strong>Location/Region</strong>（如 <code>eastasia</code>）</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px"><strong>第三步：设置消费上限（强烈建议）</strong></p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">进入 Cost Management</div>
+          <div class="step-desc">在 Azure Portal 左侧菜单找 "Cost Management + Billing" → "Budgets"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">设置预算上限为 $0</div>
+          <div class="step-desc">创建一个 Budget，金额设为 <code>$1</code>，超出时发邮件提醒。这样万一超出免费额度你会立刻知道</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fill in App -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">④</span>
+      填入 App
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">打开 App，点击顶部"API 设置"</div>
+          <div class="step-desc">展开设置面板，可以看到两个输入框</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">填入 Azure Speech Key</div>
+          <div class="step-desc">粘贴从 Azure 复制的 Key 1（32位字符串）</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">确认 Region</div>
+          <div class="step-desc">如果创建时选了 East Asia，填 <code>eastasia</code>；其他区域填对应名称</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">点击"保存"，状态变为绿色"✓ 已配置"即成功</div>
+          <div class="step-desc">Key 保存在你自己的浏览器本地，不会上传到任何服务器</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice blue">
+      <div class="notice-title">🔐 你的 Key 安全吗？</div>
+      完全安全。Key 只存储在你自己的设备浏览器里（localStorage），不经过任何中间服务器。只有你的设备能看到它，就像密码保存在浏览器里一样。
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">⑤</span>
+      常见问题
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">🇨🇳 国内网络能访问 Azure 吗？</div>
+      <div class="faq-a">注册页面（azure.microsoft.com）在国内部分地区可以直接访问，部分地区需要翻墙。注册完成后，App 调用 API 时走的是 East Asia（香港）节点，国内网络一般可以直接使用，延迟约 50-100ms，不影响体验。</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">💳 绑卡后真的不会扣钱吗？</div>
+      <div class="faq-a">注册时系统会验证扣 $1 然后立即退回，这是正常流程。只要使用 Free F0 层级，且在免费额度内，不会产生任何费用。建议同时设置消费预警，双重保险。</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">📊 如何查看我用了多少额度？</div>
+      <div class="faq-a">登录 Azure Portal，进入你的语音服务资源，左侧菜单有 "Metrics" 可以查看使用量。也可以在 "Cost Management" 里查看费用情况。</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">🔄 Key 过期了怎么办？</div>
+      <div class="faq-a">Azure Key 本身不会自动过期，除非你手动"重新生成"。如果 App 突然提示出错，可以去 Azure Portal 的 "Keys and Endpoint" 重新复制一次 Key 填入即可。</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">🗑️ 不想用了怎么删除？</div>
+      <div class="faq-a">在 Azure Portal 找到你的语音服务资源，点击"删除"即可。删除后不再产生任何费用，Key 也立即失效。</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">📱 手机上能用吗？</div>
+      <div class="faq-a">可以。把 App 网址在手机浏览器打开，iOS 建议用 Safari，Android 建议用 Chrome。录音和发音评估功能在手机上同样有效。还可以把网址添加到手机主屏幕，像原生 App 一样使用。</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  德语发音练习 App · 使用 Azure Speech Service 提供发音评估<br>
+  如有问题欢迎留言反馈
+</div>
+
+</body>
+</html>
