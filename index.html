@@ -175,7 +175,10 @@
     <span class="speed-val" id="sv">-10%</span>
   </div>
 
-  <button class="btn btn-tts" id="btn-tts" onclick="toggleTTS()">▶ 播放发音</button>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="btn btn-tts" id="btn-tts" onclick="toggleTTS()" style="margin-top:0;flex:1">▶ 播放发音</button>
+    <button class="btn btn-tts" id="btn-dl-tts" onclick="downloadTTS()" style="margin-top:0;flex:0 0 auto;padding:13px 18px" title="下载标准发音">↓</button>
+  </div>
   <button class="btn btn-rec" id="btn-rec" onclick="toggleRec()">🎤 开始跟读</button>
   <div class="status" id="status"></div>
 
@@ -326,6 +329,26 @@ async function playTTS(){
 function stopTTS(){if(ttsAudio){ttsAudio.pause();ttsAudio.src='';ttsAudio=null;}resetTTSBtn();}
 function resetTTSBtn(){isTTSOn=false;const b=document.getElementById('btn-tts');b.textContent='▶ 播放发音';b.disabled=false;b.classList.remove('stopping');}
 function replayTTS(){stopTTS();setTimeout(playTTS,60);}
+
+async function downloadTTS(){
+  const text=document.getElementById('input').value.trim();
+  if(!text){setStatus('请先输入德语句子');return;}
+  const key=getAZKey(),region=getAZRegion();
+  if(!key){setStatus('请先在 API 设置中填入 Azure Key',true);return;}
+  const btn=document.getElementById('btn-dl-tts');
+  btn.textContent='⏳'; btn.disabled=true;
+  try{
+    const voice=document.getElementById('voice-select').value;
+    const blob=await azureTTS(text,voice,ttsRate,key,region);
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const words=text.trim().split(/\s+/).slice(0,4).join('_').replace(/[^a-zA-ZäöüÄÖÜß_]/g,'');
+    a.href=url; a.download='tts_'+words+'.mp3';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }catch(e){setStatus('下载失败：'+e.message,true);}
+  btn.textContent='↓'; btn.disabled=false;
+}
 
 // ── Mic ───────────────────────────────────────────
 async function ensureMic(){
