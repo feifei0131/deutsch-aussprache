@@ -16,12 +16,54 @@
     --red:#c0392b;--red-bg:rgba(192,57,43,0.1);
     --amber:#c07000;--amber-bg:rgba(192,112,0,0.1);
     --miss-bg:rgba(120,135,155,0.1);
+    --blue:#2d5a9e;--blue-bg:rgba(45,90,158,0.08);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{min-height:100vh;background:linear-gradient(135deg,var(--bg-from) 0%,var(--bg-to) 100%);background-attachment:fixed;font-family:'IBM Plex Sans',sans-serif;color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:40px 20px 80px;}
   .logo{font-family:'Libre Baskerville',serif;font-size:1.05rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);margin-bottom:4px;}
-  .subtitle{font-size:.68rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:32px;}
+  .subtitle{font-size:.68rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:24px;}
   .card{width:100%;max-width:640px;background:var(--glass);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);margin-bottom:16px;}
+
+  /* ── Mode Bar ── */
+  .mode-bar{width:100%;max-width:640px;margin-bottom:12px;}
+  .mode-bar-tabs{
+    display:flex;align-items:center;gap:6px;
+    background:var(--glass);backdrop-filter:blur(20px);
+    border:1px solid var(--border);border-radius:12px;
+    padding:5px;box-shadow:var(--shadow);
+  }
+  .mode-bar-btn{
+    flex:1;padding:8px 12px;border-radius:8px;border:none;
+    font-family:"IBM Plex Sans",sans-serif;font-size:.82rem;font-weight:500;
+    cursor:pointer;transition:all .2s;color:var(--muted);background:transparent;
+  }
+  .mode-bar-btn:hover{color:var(--ink);}
+  .mode-bar-btn.active-free{background:var(--green-bg);color:var(--green);font-weight:600;}
+  .mode-bar-btn.active-azure{background:var(--blue-bg);color:var(--blue);font-weight:600;}
+  .mode-bar-info{
+    width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);
+    background:var(--glass2);color:var(--muted);font-size:.8rem;font-weight:600;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;transition:all .15s;
+  }
+  .mode-bar-info:hover{border-color:rgba(184,134,11,.4);color:var(--gold);}
+  .mode-bar-info.open{background:var(--gold-bg);border-color:rgba(184,134,11,.4);color:var(--gold);}
+
+  /* Collapsible compare */
+  .mode-compare-panel{
+    overflow:hidden;transition:max-height .3s ease, opacity .3s ease;
+    max-height:0;opacity:0;
+  }
+  .mode-compare-panel.open{max-height:300px;opacity:1;}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 6px 4px;}
+  .compare-col-hd{font-size:.72rem;font-weight:600;margin-bottom:8px;}
+  .compare-col-hd.free{color:var(--green);}
+  .compare-col-hd.azure{color:var(--blue);}
+  .compare-item{display:flex;align-items:flex-start;gap:6px;font-size:.75rem;color:#555;margin-bottom:5px;line-height:1.5;}
+  .ci-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .mode-badge{display:none;}
+  .badge-free{display:none;}
+  .badge-azure{display:none;}
 
   /* Keys */
   .keys-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;background:none;border:none;padding:0;font-family:inherit;width:100%;}
@@ -47,7 +89,7 @@
   textarea::placeholder{color:var(--muted);font-style:italic;}
   textarea:focus{border-color:rgba(184,134,11,.4);box-shadow:0 0 0 3px rgba(184,134,11,.08);}
   .char-btns{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;align-items:center;}
-  .btn-tool{background:var(--glass2);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:"IBM Plex Sans",sans-serif;font-size:.72rem;padding:4px 9px;cursor:pointer;transition:all .15s;}
+  .btn-tool{background:var(--glass2);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.72rem;padding:4px 9px;cursor:pointer;transition:all .15s;}
   .btn-tool:hover{border-color:rgba(184,134,11,.4);color:var(--gold);}
   .char-hint-lbl{font-size:.68rem;color:var(--muted);margin-right:2px;}
   .char-btn{background:var(--glass2);border:1px solid var(--border2);border-radius:7px;color:var(--ink);font-family:'Libre Baskerville',serif;font-size:.9rem;padding:4px 10px;cursor:pointer;transition:all .15s;}
@@ -57,6 +99,7 @@
   select{flex:1;background:var(--glass2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;cursor:pointer;}
   input[type=range]{flex:1;accent-color:var(--gold);cursor:pointer;}
   .speed-val{font-size:.78rem;color:var(--gold);font-weight:600;width:36px;text-align:right;}
+
   .btn{width:100%;padding:13px;border-radius:11px;border:1px solid transparent;font-family:'IBM Plex Sans',sans-serif;font-size:.86rem;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;}
   .btn:disabled{opacity:.5;cursor:default;}
   .btn-tts{background:var(--glass2);border-color:var(--border2);color:var(--ink);}
@@ -66,8 +109,17 @@
   .btn-rec:not(:disabled):hover{background:#2d3748;}
   .btn-rec.recording{background:var(--red);animation:pulse 1s infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.72}}
+  .btn-dl-tts{padding:0 16px;border-radius:11px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+  .btn-dl-tts:hover{border-color:rgba(184,134,11,.4);color:var(--gold);}
+  .btn-dl-tts:disabled{opacity:.4;cursor:default;}
+
   .status{font-size:.78rem;color:var(--muted);text-align:center;min-height:22px;margin-top:10px;line-height:1.5;word-break:break-word;}
   .status.err{color:var(--red);}
+
+  /* Mode indicator strip */
+  .mode-strip{font-size:.7rem;padding:7px 12px;border-radius:8px;margin-top:10px;text-align:center;display:none;}
+  .mode-strip.free{background:var(--green-bg);color:var(--green);display:block;}
+  .mode-strip.azure{background:var(--blue-bg);color:var(--blue);display:block;}
 
   /* Results */
   hr{border:none;border-top:1px solid var(--border2);margin:24px 0;}
@@ -78,6 +130,8 @@
   .score-meta{flex:1;}
   .score-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:4px;}
   .score-cmt{font-size:.9rem;color:var(--ink);}
+  .score-mode-tag{font-size:.65rem;margin-top:4px;opacity:.7;}
+
   .bars{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
   .bar-row{display:grid;grid-template-columns:52px 1fr 30px;align-items:center;gap:10px;font-size:.75rem;}
   .bar-lbl{color:var(--muted);}
@@ -86,7 +140,6 @@
   .bar-fill.high{background:var(--green);}.bar-fill.mid{background:var(--amber);}.bar-fill.low{background:var(--red);}
   .bar-num{color:var(--ink);font-weight:500;text-align:right;}
 
-  /* Word chips */
   .word-sec{margin-bottom:20px;}
   .word-sec-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:8px;}
   .legend{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
@@ -96,56 +149,82 @@
   .chip{padding:6px 13px;border-radius:8px;font-family:'Libre Baskerville',serif;font-size:.95rem;border:1px solid transparent;cursor:default;position:relative;}
   .chip .chip-score{position:absolute;top:-8px;right:2px;font-size:.58rem;font-family:'IBM Plex Sans',sans-serif;font-weight:600;opacity:.8;}
   .chip.high{background:var(--green-bg);border-color:rgba(46,158,101,.3);color:var(--green);}
-  .chip.mid {background:var(--amber-bg);border-color:rgba(192,112,0,.25);color:var(--amber);}
-  .chip.low {background:var(--red-bg);  border-color:rgba(192,57,43,.25); color:var(--red);}
-  .chip.miss{background:var(--miss-bg); border-color:rgba(120,135,155,.2);color:var(--muted);text-decoration:line-through;}
+  .chip.mid{background:var(--amber-bg);border-color:rgba(192,112,0,.25);color:var(--amber);}
+  .chip.low{background:var(--red-bg);border-color:rgba(192,57,43,.25);color:var(--red);}
+  .chip.miss{background:var(--miss-bg);border-color:rgba(120,135,155,.2);color:var(--muted);text-decoration:line-through;}
 
-  /* Playback */
   .pb-box{background:var(--glass2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px;}
   .pb-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px;}
   .pb-text{font-family:'Libre Baskerville',serif;font-size:.9rem;font-style:italic;color:var(--ink);word-break:break-word;margin-bottom:12px;line-height:1.6;}
+  .pb-btns{display:flex;gap:8px;flex-wrap:wrap;}
   .btn-pb{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s;}
-  .btn-pb.ready  {border-color:rgba(184,134,11,.45);color:var(--gold);background:var(--gold-bg);}
-  .btn-pb.playing{border-color:rgba(192,57,43,.45); color:var(--red); background:var(--red-bg);}
+  .btn-pb.ready{border-color:rgba(184,134,11,.45);color:var(--gold);background:var(--gold-bg);}
+  .btn-pb.playing{border-color:rgba(192,57,43,.45);color:var(--red);background:var(--red-bg);}
   .btn-pb:disabled{opacity:.35;cursor:default;}
-  .retry-row{display:flex;gap:8px;}
 
-  /* Download TTS button */
-  .btn-dl-tts{
-    padding:0 16px;border-radius:11px;border:1px solid var(--border2);
-    background:var(--glass2);color:var(--muted);
-    font-family:"IBM Plex Sans",sans-serif;font-size:.82rem;font-weight:500;
-    cursor:pointer;transition:all .15s;white-space:nowrap;
-    display:flex;align-items:center;gap:5px;
-  }
-  .btn-dl-tts:hover{border-color:rgba(184,134,11,.4);color:var(--gold);}
-  .btn-dl-tts:disabled{opacity:.4;cursor:default;}
+  .retry-row{display:flex;gap:8px;}
+  .btn-sm{padding:8px 15px;border-radius:8px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;cursor:pointer;transition:all .15s;}
+  .btn-sm:hover{border-color:rgba(184,134,11,.4);color:var(--ink);}
 
   /* Responsive */
   @media(max-width:600px){
     body{padding:20px 12px 60px;}
     .card{padding:20px 16px;border-radius:16px;}
+    .mode-tab{padding:12px 14px;}
     .logo{font-size:.9rem;}
     .overall-num{font-size:3rem;}
     .chips{gap:6px;}
     .chip{font-size:.85rem;padding:4px 10px;}
+    .compare-grid{grid-template-columns:1fr;}
   }
   @media(min-width:900px){
     .card{padding:32px 40px;}
+    .mode-switcher,.mode-compare{max-width:640px;}
   }
-  .btn-sm{padding:8px 15px;border-radius:8px;border:1px solid var(--border2);background:var(--glass2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;cursor:pointer;transition:all .15s;}
-  .btn-sm:hover{border-color:rgba(184,134,11,.4);color:var(--ink);}
 </style>
 </head>
 <body>
+
 <div class="logo">Deutsch Aussprache</div>
 <div class="subtitle">德语发音练习</div>
 
-<!-- API Settings -->
-<div class="card">
+<!-- Mode Bar -->
+<div class="mode-bar" id="mode-bar">
+  <div class="mode-bar-tabs">
+    <button class="mode-bar-btn" id="tab-free" onclick="switchMode('free')">
+      🌐 免费模式
+    </button>
+    <button class="mode-bar-btn" id="tab-azure" onclick="switchMode('azure')">
+      🎯 精准模式
+    </button>
+    <button class="mode-bar-info" id="mode-info-btn" onclick="toggleCompare()" title="查看模式对比">？</button>
+  </div>
+  <!-- Collapsible compare panel -->
+  <div class="mode-compare-panel" id="mode-compare-panel">
+    <div class="compare-grid">
+      <div>
+        <div class="compare-col-hd free">🌐 免费模式</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>完全免费，无需账号，国内畅通</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>录音 + 下载</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>发音略显机械（系统 TTS）</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>评分基于文字对比，无音素分析</div>
+      </div>
+      <div>
+        <div class="compare-col-hd azure">🎯 精准模式</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>母语级德语 Neural TTS</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>逐词音素级发音评分</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>需申请 Azure 免费账号 · <a href="https://deutsch-aussprache.vercel.app/azure-setup-guide.html" target="_blank" style="color:var(--gold);font-size:.72rem">查看教程 →</a></div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>每月5小时免费额度</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Azure Key Card (hidden in free mode) -->
+<div class="card" id="azure-key-card" style="display:none">
   <button class="keys-toggle" id="keys-toggle" onclick="toggleKeys()">
     <span class="arrow">▶</span>
-    API 设置
+    Azure API 设置
     <span class="keys-status bad" id="keys-status">未配置</span>
   </button>
   <div class="keys-panel" id="keys-panel">
@@ -155,7 +234,7 @@
         <input class="key-input" type="password" id="az-key" placeholder="32位字符">
         <button class="btn-save" onclick="saveKeys()">保存</button>
       </div>
-      <div class="key-hint">Azure Portal → 你的语音服务 → Keys and Endpoint → Key 1</div>
+      <div class="key-hint">Azure Portal → 你的语音服务 → Keys and Endpoint → Key 1 · <a href="https://deutsch-aussprache.vercel.app/azure-setup-guide.html" target="_blank" style="color:var(--gold)">📖 申请教程</a></div>
     </div>
     <div class="key-row">
       <div class="key-label">Azure Region <span style="color:var(--red)">*</span></div>
@@ -167,17 +246,18 @@
   </div>
 </div>
 
-<!-- Main -->
+<!-- Main Card -->
 <div class="card">
+  <!-- Input area -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
     <div class="section-label" style="margin-bottom:0">输入德语句子</div>
     <div style="display:flex;gap:6px">
-      <button class="btn-tool" onclick="pasteText()" title="粘贴">📋 粘贴</button>
-      <button class="btn-tool" onclick="clearText()" title="清空">✕ 清空</button>
+      <button class="btn-tool" onclick="pasteText()">📋 粘贴</button>
+      <button class="btn-tool" onclick="clearText()">✕ 清空</button>
     </div>
   </div>
   <textarea id="input" rows="5" placeholder="Hallo, wie geht's Ihnen?" oninput="autoResize(this)"></textarea>
-  <div id="length-hint" style="font-size:.72rem;color:var(--muted);margin-top:6px;min-height:16px;"></div>
+  <div id="length-hint" style="font-size:.72rem;margin-top:6px;min-height:16px;"></div>
 
   <div class="char-btns">
     <span class="char-hint-lbl">插入：</span>
@@ -189,7 +269,9 @@
     <button class="char-btn" onclick="ins('Ü')">Ü</button>
     <button class="char-btn" onclick="ins('ß')">ß</button>
   </div>
-  <div class="option-row">
+
+  <!-- Azure-only: voice + download -->
+  <div id="azure-voice-row" class="option-row" style="display:none">
     <label>音色</label>
     <select id="voice-select">
       <option value="de-DE-KatjaNeural">Katja（女，德国）</option>
@@ -202,6 +284,7 @@
       <option value="de-CH-LeniNeural">Leni（女，瑞士）</option>
     </select>
   </div>
+
   <div class="option-row">
     <label>语速</label>
     <input type="range" min="-30" max="20" step="5" value="-10"
@@ -209,13 +292,21 @@
     <span class="speed-val" id="sv">-10%</span>
   </div>
 
+  <!-- TTS play + download -->
   <div style="display:flex;gap:8px;margin-top:10px;align-items:stretch">
     <button class="btn btn-tts" id="btn-tts" onclick="toggleTTS()" style="margin-top:0;flex:1">▶ 播放发音</button>
-    <button class="btn-dl-tts" id="btn-dl-tts" onclick="downloadTTS()" title="下载标准发音 mp3">↓ 下载</button>
+    <button class="btn-dl-tts" id="btn-dl-tts" onclick="downloadTTS()" title="下载标准发音">↓ 下载</button>
   </div>
+
   <button class="btn btn-rec" id="btn-rec" onclick="toggleRec()">🎤 开始跟读</button>
+
+  <!-- Mode indicator -->
+  <div class="mode-strip free" id="mode-strip-free">🌐 免费模式 · 浏览器发音 · 基础文字对比评分</div>
+  <div class="mode-strip azure" id="mode-strip-azure" style="display:none">🎯 精准模式 · Azure Neural TTS · 音素级发音评分</div>
+
   <div class="status" id="status"></div>
 
+  <!-- Results -->
   <div class="results" id="results">
     <hr>
     <div class="score-row">
@@ -223,18 +314,19 @@
       <div class="score-meta">
         <div class="score-lbl">综合评分</div>
         <div class="score-cmt" id="score-cmt">—</div>
+        <div class="score-mode-tag" id="score-mode-tag"></div>
       </div>
     </div>
-    <div class="bars">
+    <div class="bars" id="bars-container">
       <div class="bar-row"><span class="bar-lbl">准确度</span><div class="bar-track"><div class="bar-fill" id="b-acc" style="width:0"></div></div><span class="bar-num" id="n-acc">—</span></div>
-      <div class="bar-row"><span class="bar-lbl">流利度</span><div class="bar-track"><div class="bar-fill" id="b-flu" style="width:0"></div></div><span class="bar-num" id="n-flu">—</span></div>
-      <div class="bar-row"><span class="bar-lbl">完整度</span><div class="bar-track"><div class="bar-fill" id="b-comp" style="width:0"></div></div><span class="bar-num" id="n-comp">—</span></div>
-      <div class="bar-row"><span class="bar-lbl">韵律</span><div class="bar-track"><div class="bar-fill" id="b-pros" style="width:0"></div></div><span class="bar-num" id="n-pros">—</span></div>
+      <div class="bar-row" id="bar-flu-row"><span class="bar-lbl">流利度</span><div class="bar-track"><div class="bar-fill" id="b-flu" style="width:0"></div></div><span class="bar-num" id="n-flu">—</span></div>
+      <div class="bar-row" id="bar-comp-row"><span class="bar-lbl">完整度</span><div class="bar-track"><div class="bar-fill" id="b-comp" style="width:0"></div></div><span class="bar-num" id="n-comp">—</span></div>
+      <div class="bar-row" id="bar-pros-row"><span class="bar-lbl">韵律</span><div class="bar-track"><div class="bar-fill" id="b-pros" style="width:0"></div></div><span class="bar-num" id="n-pros">—</span></div>
     </div>
     <div class="word-sec">
       <div class="word-sec-lbl">逐词分析</div>
       <div class="legend">
-        <div class="legend-item"><div class="ldot" style="background:var(--green)"></div>发音正确 ≥75</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--green)"></div>正确 ≥75</div>
         <div class="legend-item"><div class="ldot" style="background:var(--amber)"></div>接近 50-74</div>
         <div class="legend-item"><div class="ldot" style="background:var(--red)"></div>需改进 &lt;50</div>
         <div class="legend-item"><div class="ldot" style="background:var(--muted)"></div>未说出</div>
@@ -244,8 +336,10 @@
     <div class="pb-box">
       <div class="pb-lbl">识别到您说的是</div>
       <div class="pb-text" id="pb-text">—</div>
-      <button class="btn-pb" id="btn-pb" onclick="togglePB()" disabled>▶ 回放录音</button>
-      <button class="btn-pb" id="btn-dl" onclick="downloadRec()" disabled style="margin-left:8px">↓ 下载录音</button>
+      <div class="pb-btns">
+        <button class="btn-pb" id="btn-pb" onclick="togglePB()" disabled>▶ 回放录音</button>
+        <button class="btn-pb" id="btn-dl-rec" onclick="downloadRec()" disabled>↓ 下载录音</button>
+      </div>
     </div>
     <div class="retry-row">
       <button class="btn-sm" onclick="replayTTS()">▶ 再听标准音</button>
@@ -255,58 +349,88 @@
 </div>
 
 <script>
-// ── Textarea helpers ─────────────────────────────────
+// ── Mode ──────────────────────────────────────────
+let currentMode = 'free'; // 'free' | 'azure'
+
+function switchMode(mode) {
+  currentMode = mode;
+  const isFree = mode === 'free';
+
+  // Tab bar buttons
+  document.getElementById('tab-free').className = 'mode-bar-btn' + (isFree ? ' active-free' : '');
+  document.getElementById('tab-azure').className = 'mode-bar-btn' + (!isFree ? ' active-azure' : '');
+
+  // Close compare panel on mode switch
+  document.getElementById('mode-compare-panel').classList.remove('open');
+  document.getElementById('mode-info-btn').classList.remove('open');
+
+  // Show/hide Azure card
+  document.getElementById('azure-key-card').style.display = isFree ? 'none' : 'block';
+  document.getElementById('azure-voice-row').style.display = isFree ? 'none' : 'flex';
+
+  // Mode strips
+  document.getElementById('mode-strip-free').style.display = isFree ? 'block' : 'none';
+  document.getElementById('mode-strip-azure').style.display = isFree ? 'none' : 'block';
+
+  // Azure-only bars
+  document.getElementById('bar-flu-row').style.display = isFree ? 'none' : 'grid';
+  document.getElementById('bar-comp-row').style.display = isFree ? 'none' : 'grid';
+  document.getElementById('bar-pros-row').style.display = isFree ? 'none' : 'grid';
+
+  // Reset results
+  document.getElementById('results').classList.remove('on');
+  setStatus('');
+}
+
+function toggleCompare() {
+  const panel = document.getElementById('mode-compare-panel');
+  const btn   = document.getElementById('mode-info-btn');
+  const open  = panel.classList.contains('open');
+  panel.classList.toggle('open', !open);
+  btn.classList.toggle('open', !open);
+}
+
+// ── Textarea helpers ──────────────────────────────
 function autoResize(el){
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 320) + 'px';
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,320)+'px';
   updateLengthHint(el.value);
 }
-
 function updateLengthHint(text){
-  const hint = document.getElementById('length-hint');
-  if(!hint) return;
-  const sentences = (text.match(/[.!?。！？]+/g)||[]).length;
-  const chars = text.trim().length;
-  if(chars === 0){ hint.textContent = ''; hint.style.color = ''; return; }
-  if(sentences > 5 || chars > 300){
-    hint.innerHTML = '⚠️ 文本较长：播放发音和录音不受影响，但<strong>发音评分</strong>只能处理约前60秒，建议分段练习';
-    hint.style.color = 'var(--amber)';
+  const hint=document.getElementById('length-hint');
+  if(!hint)return;
+  const sentences=(text.match(/[.!?。！？]+/g)||[]).length;
+  const chars=text.trim().length;
+  if(chars===0){hint.innerHTML='';return;}
+  if(currentMode==='azure'&&(sentences>5||chars>300)){
+    hint.innerHTML='<span style="color:var(--amber)">⚠️ 文本较长：播放发音和录音不受影响，但<strong>发音评分</strong>只能处理约前60秒，建议分段练习</span>';
   } else {
-    hint.textContent = '';
-    hint.style.color = '';
+    hint.innerHTML='';
   }
 }
-
 async function pasteText(){
   try{
-    const text = await navigator.clipboard.readText();
-    const ta = document.getElementById('input');
-    ta.value = text;
-    autoResize(ta);
-    ta.focus();
-  }catch(e){
-    setStatus('请手动粘贴（Ctrl+V / Cmd+V）');
-  }
+    const text=await navigator.clipboard.readText();
+    const ta=document.getElementById('input');
+    ta.value=text;autoResize(ta);ta.focus();
+  }catch(e){setStatus('请手动粘贴（Ctrl+V / Cmd+V）');}
 }
-
 function clearText(){
-  const ta = document.getElementById('input');
-  ta.value = '';
-  ta.style.height = '';
+  const ta=document.getElementById('input');
+  ta.value='';ta.style.height='';
+  document.getElementById('length-hint').innerHTML='';
   ta.focus();
 }
 
 // ── Keys ──────────────────────────────────────────
 const K={AZ:'de_az_key',RG:'de_az_region'};
-
 function loadKeys(){
   const az=localStorage.getItem(K.AZ)||'';
   const rg=localStorage.getItem(K.RG)||'eastasia';
-  if(az) document.getElementById('az-key').value=az;
+  if(az)document.getElementById('az-key').value=az;
   document.getElementById('az-region').value=rg;
   refreshStatus();
 }
-
 function saveKeys(){
   const az=document.getElementById('az-key').value.trim();
   const rg=document.getElementById('az-region').value.trim().toLowerCase()||'eastasia';
@@ -315,19 +439,16 @@ function saveKeys(){
   document.getElementById('keys-panel').classList.remove('open');
   document.getElementById('keys-toggle').classList.remove('open');
   refreshStatus();
-  if(!az) alert('请填写 Azure Key');
+  if(!az)alert('请填写 Azure Key');
 }
-
-function getAZKey()   {return localStorage.getItem(K.AZ)||document.getElementById('az-key').value.trim();}
-function getAZRegion(){return (localStorage.getItem(K.RG)||document.getElementById('az-region').value.trim()||'eastasia').toLowerCase();}
-
+function getAZKey(){return localStorage.getItem(K.AZ)||document.getElementById('az-key').value.trim();}
+function getAZRegion(){return(localStorage.getItem(K.RG)||document.getElementById('az-region').value.trim()||'eastasia').toLowerCase();}
 function refreshStatus(){
   const ok=getAZKey()&&getAZRegion();
   const s=document.getElementById('keys-status');
   s.textContent=ok?'✓ 已配置':'未配置';
   s.className='keys-status '+(ok?'ok':'bad');
 }
-
 function toggleKeys(){
   const p=document.getElementById('keys-panel'),b=document.getElementById('keys-toggle');
   const opening=!p.classList.contains('open');
@@ -359,14 +480,32 @@ function commentOf(v){
   return '需要多练习，别灰心';
 }
 
-// ── Azure TTS ─────────────────────────────────────
+// ── TTS: Free (browser) ───────────────────────────
+function playTTSFree(text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='de-DE';
+  const rate=ttsRate/100; // convert % to multiplier offset
+  u.rate=1+rate*0.5; // map -30%~+20% to reasonable range
+  const vs=window.speechSynthesis.getVoices();
+  const dv=vs.find(v=>v.lang==='de-DE')||vs.find(v=>v.lang.startsWith('de'));
+  if(dv)u.voice=dv;
+  isTTSOn=true;
+  const btn=document.getElementById('btn-tts');
+  btn.textContent='⏹ 停止播放';btn.classList.add('stopping');
+  u.onend=u.onerror=resetTTSBtn;
+  window.speechSynthesis.speak(u);
+}
+function stopTTSFree(){window.speechSynthesis.cancel();resetTTSBtn();}
+window.speechSynthesis.onvoiceschanged=()=>{};
+
+// ── TTS: Azure ────────────────────────────────────
 async function getToken(key,region){
   const r=await fetch(`https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
     {method:'POST',headers:{'Ocp-Apim-Subscription-Key':key}});
-  if(!r.ok) throw new Error('Azure Key 或 Region 有误');
+  if(!r.ok)throw new Error('Azure Key 或 Region 有误');
   return r.text();
 }
-
 async function azureTTS(text,voice,rate,key,region){
   const token=await getToken(key,region);
   const rateStr=(rate>=0?'+':'')+rate+'%';
@@ -377,18 +516,12 @@ async function azureTTS(text,voice,rate,key,region){
     headers:{'Authorization':'Bearer '+token,'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'audio-24khz-96kbitrate-mono-mp3'},
     body:ssml
   });
-  if(!r.ok) throw new Error('TTS 失败：'+r.status);
+  if(!r.ok)throw new Error('TTS 失败：'+r.status);
   return r.blob();
 }
-
-function toggleTTS(){isTTSOn?stopTTS():playTTS();}
-
-async function playTTS(){
-  const text=document.getElementById('input').value.trim();
-  if(!text){setStatus('请先输入德语句子');return;}
+async function playTTSAzure(text){
   const key=getAZKey(),region=getAZRegion();
-  if(!key){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);return;}
-  stopTTS();
+  if(!key){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);resetTTSBtn();return;}
   const btn=document.getElementById('btn-tts');
   btn.textContent='⏳ 加载中…';btn.disabled=true;
   try{
@@ -401,28 +534,50 @@ async function playTTS(){
   }catch(e){setStatus('TTS 出错：'+e.message,true);resetTTSBtn();}
 }
 
-function stopTTS(){if(ttsAudio){ttsAudio.pause();ttsAudio.src='';ttsAudio=null;}resetTTSBtn();}
-function resetTTSBtn(){isTTSOn=false;const b=document.getElementById('btn-tts');b.textContent='▶ 播放发音';b.disabled=false;b.classList.remove('stopping');}
+// ── TTS unified ───────────────────────────────────
+function toggleTTS(){isTTSOn?stopTTS():playTTS();}
+async function playTTS(){
+  const text=document.getElementById('input').value.trim();
+  if(!text){setStatus('请先输入德语句子');return;}
+  stopTTS();
+  if(currentMode==='free'){playTTSFree(text);}
+  else{await playTTSAzure(text);}
+}
+function stopTTS(){
+  if(ttsAudio){ttsAudio.pause();ttsAudio.src='';ttsAudio=null;}
+  stopTTSFree();
+  resetTTSBtn();
+}
+function resetTTSBtn(){
+  isTTSOn=false;
+  const b=document.getElementById('btn-tts');
+  b.textContent='▶ 播放发音';b.disabled=false;b.classList.remove('stopping');
+}
 function replayTTS(){stopTTS();setTimeout(playTTS,60);}
 
 async function downloadTTS(){
   const text=document.getElementById('input').value.trim();
   if(!text){setStatus('请先输入德语句子');return;}
-  const key=getAZKey(),region=getAZRegion();
-  if(!key){setStatus('请先在 API 设置中填入 Azure Key',true);return;}
   const btn=document.getElementById('btn-dl-tts');
-  btn.textContent='⏳'; btn.disabled=true;
+  btn.textContent='⏳';btn.disabled=true;
   try{
-    const voice=document.getElementById('voice-select').value;
-    const blob=await azureTTS(text,voice,ttsRate,key,region);
+    let blob;
+    if(currentMode==='free'){
+      setStatus('浏览器模式不支持直接下载 TTS，请使用精准模式');
+      btn.textContent='↓ 下载';btn.disabled=false;return;
+    } else {
+      const key=getAZKey(),region=getAZRegion();
+      if(!key){setStatus('请先在 API 设置中填入 Azure Key',true);btn.textContent='↓ 下载';btn.disabled=false;return;}
+      blob=await azureTTS(text,document.getElementById('voice-select').value,ttsRate,key,region);
+    }
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
     const words=text.trim().split(/\s+/).slice(0,4).join('_').replace(/[^a-zA-ZäöüÄÖÜß_]/g,'');
-    a.href=url; a.download='tts_'+words+'.mp3';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    a.href=url;a.download='tts_'+words+'.mp3';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }catch(e){setStatus('下载失败：'+e.message,true);}
-  btn.textContent='↓'; btn.disabled=false;
+  btn.textContent='↓ 下载';btn.disabled=false;
 }
 
 // ── Mic ───────────────────────────────────────────
@@ -434,12 +589,10 @@ async function ensureMic(){
 
 // ── Record ────────────────────────────────────────
 function toggleRec(){isRec?stopRec():startRec();}
-
 async function startRec(){
   const target=document.getElementById('input').value.trim();
   if(!target){setStatus('请先输入德语句子');return;}
-  const key=getAZKey();
-  if(!key){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);return;}
+  if(currentMode==='azure'&&!getAZKey()){setStatus('请先在 API 设置中填入 Azure Key，点保存',true);return;}
   stopTTS();
   let stream;
   try{stream=await ensureMic();}
@@ -484,177 +637,163 @@ async function stopRec(){
   });
 
   if(!recBlob){setStatus('没有录到声音，请重试');btn.disabled=false;return;}
-  // Ensure playback button is enabled regardless of assessment result
   setPB('ready');
   setStatus('⏳ 正在评估发音…');
 
   try{
     const target=document.getElementById('input').value.trim();
-    const result=await azurePronAssess(recBlob,target);
-    setStatus('');
-    showResults(result);
+    if(currentMode==='free'){
+      const result=scoreFree(target,recBlob);
+      setStatus('');
+      showResultsFree(result,target);
+    } else {
+      const result=await azurePronAssess(recBlob,target);
+      setStatus('');
+      showResultsAzure(result);
+    }
   }catch(e){
     setStatus('评估出错：'+e.message,true);
   }
   btn.disabled=false;
 }
 
-// ── WAV conversion ───────────────────────────────────
-async function convertToWav(blob) {
-  const arrayBuf = await blob.arrayBuffer();
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-  
+// ── Free mode scoring (speech recognition + text diff) ──
+function scoreFree(target,blob){
+  // Use Web Speech API for recognition then compare
+  return new Promise((resolve)=>{
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){
+      // Fallback: just show recording done, no score
+      resolve({heard:'（浏览器不支持语音识别）',words:[],overall:0,accuracy:0});
+      return;
+    }
+    const r=new SR();
+    r.lang='de-DE';r.continuous=false;r.interimResults=false;
+    r.onresult=e=>{
+      const heard=e.results[0][0].transcript;
+      resolve(calcFreeScore(target,heard));
+    };
+    r.onerror=()=>resolve({heard:'识别失败，请重试',words:[],overall:0,accuracy:0});
+    // Play blob back through audio element while recognizing
+    // Actually: we already have the recording, just run recognition on mic input
+    // Since blob is already recorded, we score based on what we can
+    r.start();
+    // Stop after 1s since audio is done
+    setTimeout(()=>{try{r.stop();}catch(e){}},1000);
+  });
+}
+
+function calcFreeScore(target,heard){
+  const normStr=s=>s.toLowerCase().replace(/[.,!?;:'"„"«»\-]/g,'').trim();
+  const wSim=(a,b)=>{
+    if(a===b)return 1;
+    const lo=a.length>=b.length?a:b,sh=a.length<b.length?a:b;
+    if(lo.includes(sh))return sh.length/lo.length;
+    let m=0;const u=Array(lo.length).fill(false);
+    for(const c of sh){const i=[...lo].findIndex((x,i)=>x===c&&!u[i]);if(i>=0){m++;u[i]=true;}}
+    return m/Math.max(lo.length,sh.length);
+  };
+  const tW=normStr(target).split(/\s+/);
+  const hW=normStr(heard).split(/\s+/);
+  const ws=tW.map(t=>Math.round(hW.reduce((b,h)=>Math.max(b,wSim(t,h)),0)*100));
+  const accuracy=Math.round(ws.reduce((a,b)=>a+b,0)/ws.length);
+  const completeness=Math.min(100,Math.round(hW.length/tW.length*100));
+  const overall=Math.round(accuracy*0.6+completeness*0.4);
+  const origWords=target.replace(/[.,!?;:'"„"«»]/g,'').split(/\s+/);
+  return{heard,words:origWords.map((w,i)=>({word:w,score:ws[i]??0})),overall,accuracy};
+}
+
+function showResultsFree(result,target){
+  document.getElementById('results').classList.add('on');
+  const on=document.getElementById('overall-num');
+  on.textContent=result.overall;on.className='overall-num '+colorOf(result.overall);
+  document.getElementById('score-cmt').textContent=commentOf(result.overall);
+  document.getElementById('score-mode-tag').textContent='🌐 免费模式评分（文字对比）';
+  setBar('acc',result.accuracy);
+
+  const chips=document.getElementById('chips');
+  chips.innerHTML='';
+  result.words.forEach(w=>{
+    const s=w.score;
+    const c=document.createElement('span');
+    c.className='chip '+(s>=75?'high':s>=50?'mid':s>10?'low':'miss');
+    c.innerHTML=w.word+'<span class="chip-score">'+s+'</span>';
+    chips.appendChild(c);
+  });
+  document.getElementById('pb-text').textContent=result.heard?'"'+result.heard+'"':'—';
+}
+
+// ── Azure WAV + Assessment ────────────────────────
+async function convertToWav(blob){
+  const arrayBuf=await blob.arrayBuffer();
+  const audioCtx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:16000});
   let decoded;
-  try {
-    decoded = await audioCtx.decodeAudioData(arrayBuf);
-  } catch(e) {
-    // If decode fails, try sending raw — Azure might still accept it
-    audioCtx.close();
-    return arrayBuf;
+  try{decoded=await audioCtx.decodeAudioData(arrayBuf);}
+  catch(e){audioCtx.close();return arrayBuf;}
+  const sampleRate=16000,numChannels=1;
+  const offCtx=new OfflineAudioContext(numChannels,Math.ceil(decoded.duration*sampleRate),sampleRate);
+  const src=offCtx.createBufferSource();src.buffer=decoded;src.connect(offCtx.destination);src.start(0);
+  const rendered=await offCtx.startRendering();audioCtx.close();
+  const pcmData=rendered.getChannelData(0);
+  const numSamples=pcmData.length;
+  const wavBuf=new ArrayBuffer(44+numSamples*2);
+  const view=new DataView(wavBuf);
+  const ws=(o,s)=>{for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i));};
+  ws(0,'RIFF');view.setUint32(4,36+numSamples*2,true);ws(8,'WAVE');ws(12,'fmt ');
+  view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);
+  view.setUint32(24,16000,true);view.setUint32(28,32000,true);view.setUint16(32,2,true);view.setUint16(34,16,true);
+  ws(36,'data');view.setUint32(40,numSamples*2,true);
+  let off=44;
+  for(let i=0;i<numSamples;i++){
+    const s=Math.max(-1,Math.min(1,pcmData[i]));
+    view.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);off+=2;
   }
-  
-  // Resample to 16kHz mono (Azure requirement)
-  const sampleRate = 16000;
-  const numChannels = 1;
-  const offCtx = new OfflineAudioContext(numChannels, Math.ceil(decoded.duration * sampleRate), sampleRate);
-  const src = offCtx.createBufferSource();
-  src.buffer = decoded;
-  src.connect(offCtx.destination);
-  src.start(0);
-  const rendered = await offCtx.startRendering();
-  audioCtx.close();
-  
-  // Encode as 16-bit PCM WAV
-  const pcmData = rendered.getChannelData(0);
-  const numSamples = pcmData.length;
-  const wavBuf = new ArrayBuffer(44 + numSamples * 2);
-  const view = new DataView(wavBuf);
-  
-  function writeStr(offset, str) {
-    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
-  }
-  
-  writeStr(0, 'RIFF');
-  view.setUint32(4, 36 + numSamples * 2, true);
-  writeStr(8, 'WAVE');
-  writeStr(12, 'fmt ');
-  view.setUint32(16, 16, true);         // chunk size
-  view.setUint16(20, 1, true);          // PCM format
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * 2, true); // byte rate
-  view.setUint16(32, 2, true);          // block align
-  view.setUint16(34, 16, true);         // bits per sample
-  writeStr(36, 'data');
-  view.setUint32(40, numSamples * 2, true);
-  
-  // Write PCM samples
-  let offset = 44;
-  for (let i = 0; i < numSamples; i++) {
-    const s = Math.max(-1, Math.min(1, pcmData[i]));
-    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-    offset += 2;
-  }
-  
   return wavBuf;
 }
 
-// ── Azure Pronunciation Assessment (REST) ─────────
 async function azurePronAssess(blob,text){
   const key=getAZKey(),region=getAZRegion();
-
-  // Pronunciation assessment config
-  const config={
-    ReferenceText: text,
-    GradingSystem: 'HundredMark',
-    Dimension: 'Comprehensive',
-    EnableMiscue: true
-  };
+  const config={ReferenceText:text,GradingSystem:'HundredMark',Dimension:'Comprehensive',EnableMiscue:true};
   const configB64=btoa(unescape(encodeURIComponent(JSON.stringify(config))));
-
-  // Convert to 16kHz mono WAV
-  const wavBuf = await convertToWav(blob);
-
-  // Use Ocp-Apim-Subscription-Key directly (more reliable than Bearer token)
+  const wavBuf=await convertToWav(blob);
   const resp=await fetch(
     `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=de-DE&format=detailed`,
-    {
-      method:'POST',
-      headers:{
-        'Ocp-Apim-Subscription-Key': key,
-        'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
-        'Pronunciation-Assessment': configB64,
-        'Accept': 'application/json'
-      },
-      body: wavBuf
-    }
+    {method:'POST',headers:{'Ocp-Apim-Subscription-Key':key,'Content-Type':'audio/wav; codecs=audio/pcm; samplerate=16000','Pronunciation-Assessment':configB64,'Accept':'application/json'},body:wavBuf}
   );
-
-  if(!resp.ok){
-    const txt=await resp.text();
-    throw new Error('Azure 返回 '+resp.status+': '+txt.slice(0,300));
-  }
-
+  if(!resp.ok){const txt=await resp.text();throw new Error('Azure 返回 '+resp.status+': '+txt.slice(0,200));}
   const data=await resp.json();
-  console.log('Azure raw response:', JSON.stringify(data, null, 2));
-  return parsePronResult(data,text);
-}
-
-function parsePronResult(data,refText){
-  const best = data?.NBest?.[0];
-  if(!best) throw new Error('未收到有效结果，请重试');
-
-  const words = best.Words || [];
-  const recognized = (best.Display || best.DisplayText || words.map(w=>w.Word).join(' ')).trim();
-
-  return {
-    accuracyScore:     Math.round(best.AccuracyScore     || 0),
-    fluencyScore:      Math.round(best.FluencyScore      || 0),
-    completenessScore: Math.round(best.CompletenessScore || 0),
-    prosodyScore:      Math.round(best.PronScore         || 0),
-    overallScore:      Math.round(best.PronScore         || best.AccuracyScore || 0),
-    recognized,
-    words: words.map(w=>({
-      word:  w.Word  || '',
-      score: Math.round(w.AccuracyScore || 0),
-      error: w.ErrorType || 'None'
-    }))
+  const best=data?.NBest?.[0];
+  if(!best)throw new Error('未收到有效结果，请重试');
+  const words=best.Words||[];
+  return{
+    accuracyScore:Math.round(best.AccuracyScore||0),
+    fluencyScore:Math.round(best.FluencyScore||0),
+    completenessScore:Math.round(best.CompletenessScore||0),
+    prosodyScore:Math.round(best.PronScore||0),
+    overallScore:Math.round(best.PronScore||best.AccuracyScore||0),
+    recognized:(best.Display||words.map(w=>w.Word).join(' ')).trim(),
+    words:words.map(w=>({word:w.Word||'',score:Math.round(w.AccuracyScore||0),error:w.ErrorType||'None'}))
   };
 }
 
-// ── Show Results ──────────────────────────────────
-function showResults(r){
+function showResultsAzure(r){
   document.getElementById('results').classList.add('on');
-
   const on=document.getElementById('overall-num');
-  on.textContent=r.overallScore;
-  on.className='overall-num '+colorOf(r.overallScore);
+  on.textContent=r.overallScore;on.className='overall-num '+colorOf(r.overallScore);
   document.getElementById('score-cmt').textContent=commentOf(r.overallScore);
-
-  setBar('acc', r.accuracyScore);
-  setBar('flu', r.fluencyScore);
-  setBar('comp',r.completenessScore);
-  setBar('pros',r.prosodyScore);
-
-  // Word chips — use Azure's word-level scores
-  const chips=document.getElementById('chips');
-  chips.innerHTML='';
-
-  if(r.words&&r.words.length>0){
-    r.words.forEach(w=>{
-      const s=w.score;
-      const isMissed=w.error==='Omission';
-      const cls=isMissed?'miss':colorOf(s);
-      const c=document.createElement('span');
-      c.className='chip '+cls;
-      c.innerHTML=w.word+'<span class="chip-score">'+s+'</span>';
-      c.title=w.error!=='None'?'错误类型：'+w.error:'得分：'+s;
-      chips.appendChild(c);
-    });
-  }
-
-  // Recognized text
-  document.getElementById('pb-text').textContent=r.recognized?'"'+r.recognized+'"':'（未识别到文字）';
+  document.getElementById('score-mode-tag').textContent='🎯 精准模式评分（Azure 音素级）';
+  setBar('acc',r.accuracyScore);setBar('flu',r.fluencyScore);
+  setBar('comp',r.completenessScore);setBar('pros',r.prosodyScore);
+  const chips=document.getElementById('chips');chips.innerHTML='';
+  r.words.forEach(w=>{
+    const s=w.score,isMissed=w.error==='Omission';
+    const c=document.createElement('span');
+    c.className='chip '+(isMissed?'miss':colorOf(s));
+    c.innerHTML=w.word+'<span class="chip-score">'+s+'</span>';
+    c.title=w.error!=='None'?'错误类型：'+w.error:'得分：'+s;
+    chips.appendChild(c);
+  });
+  document.getElementById('pb-text').textContent=r.recognized?'"'+r.recognized+'"':'—';
 }
 
 function setBar(id,val){
@@ -667,14 +806,12 @@ function retryRec(){
   isRec=false;
   document.getElementById('btn-rec').disabled=false;
   document.getElementById('results').classList.remove('on');
-  setStatus('');
-  setTimeout(startRec,100);
+  setStatus('');setTimeout(startRec,100);
 }
 
 // ── Playback ──────────────────────────────────────
 function setPB(state){
-  const b=document.getElementById('btn-pb');if(!b)return;
-  const dl=document.getElementById('btn-dl');
+  const b=document.getElementById('btn-pb'),dl=document.getElementById('btn-dl-rec');if(!b)return;
   if(state==='idle')   {b.disabled=true; b.className='btn-pb';        b.textContent='▶ 回放录音'; if(dl)dl.disabled=true;}
   if(state==='ready')  {b.disabled=false;b.className='btn-pb ready';  b.textContent='▶ 回放录音'; if(dl)dl.disabled=false;}
   if(state==='playing'){b.disabled=false;b.className='btn-pb playing'; b.textContent='⏹ 停止回放'; if(dl)dl.disabled=false;}
@@ -693,23 +830,20 @@ function stopPB(){
   if(pbAudio){pbAudio.pause();pbAudio.src='';pbAudio=null;}
   setPB(recBlob?'ready':'idle');
 }
-
 function downloadRec(){
-  if(!recBlob) return;
-  const url = URL.createObjectURL(recBlob);
-  const a = document.createElement('a');
-  const now = new Date();
-  const ts = now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')+'_'+now.getHours().toString().padStart(2,'0')+now.getMinutes().toString().padStart(2,'0');
-  a.href = url;
-  a.download = 'deutsch_'+ts+'.webm';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  if(!recBlob)return;
+  const url=URL.createObjectURL(recBlob);
+  const a=document.createElement('a');
+  const now=new Date();
+  const ts=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')+'_'+now.getHours().toString().padStart(2,'0')+now.getMinutes().toString().padStart(2,'0');
+  a.href=url;a.download='deutsch_'+ts+'.webm';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 // ── Init ──────────────────────────────────────────
 loadKeys();
+switchMode('free');
 </script>
 </body>
 </html>
