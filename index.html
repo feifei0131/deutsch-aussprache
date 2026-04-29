@@ -615,6 +615,33 @@ async function startRec(){
   btn.textContent='⏹ 停止录音';btn.classList.add('recording');
   setStatus('🎙 录音中… 读完后点"停止录音"');
   document.getElementById('results').classList.remove('on');
+
+  // Free mode: also run Web Speech recognition alongside recording
+  if(currentMode==='free'){
+    freeHeardText='';
+    startFreeRecognition();
+  }
+}
+
+let freeRecog=null;
+function startFreeRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  freeRecog=new SR();
+  freeRecog.lang='de-DE';
+  freeRecog.continuous=true;
+  freeRecog.interimResults=false;
+  freeRecog.onresult=e=>{
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal) freeHeardText+=e.results[i][0].transcript+' ';
+    }
+  };
+  freeRecog.onerror=e=>{ if(e.error!=='aborted'&&e.error!=='no-speech') console.log('recog:',e.error); };
+  freeRecog.onend=()=>{ if(isRec&&currentMode==='free'){ try{freeRecog.start();}catch(e){} } };
+  try{freeRecog.start();}catch(e){}
+}
+function stopFreeRecognition(){
+  if(freeRecog){ try{freeRecog.abort();}catch(e){} freeRecog=null; }
 }
 
 async function stopRec(){
@@ -623,6 +650,9 @@ async function stopRec(){
   const btn=document.getElementById('btn-rec');
   btn.textContent='🎤 开始跟读';btn.classList.remove('recording');
   btn.disabled=true;
+
+  // Stop free mode recognition
+  if(currentMode==='free') stopFreeRecognition();
 
   await new Promise(resolve=>{
     if(!mediaRec||mediaRec.state==='inactive'){resolve();return;}
@@ -643,7 +673,7 @@ async function stopRec(){
   try{
     const target=document.getElementById('input').value.trim();
     if(currentMode==='free'){
-      const result=scoreFree(target,recBlob);
+      const result=await scoreFree(target,recBlob);
       setStatus('');
       showResultsFree(result,target);
     } else {
@@ -657,30 +687,17 @@ async function stopRec(){
   btn.disabled=false;
 }
 
-// ── Free mode scoring (speech recognition + text diff) ──
-function scoreFree(target,blob){
-  // Use Web Speech API for recognition then compare
-  return new Promise((resolve)=>{
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SR){
-      // Fallback: just show recording done, no score
-      resolve({heard:'（浏览器不支持语音识别）',words:[],overall:0,accuracy:0});
-      return;
-    }
-    const r=new SR();
-    r.lang='de-DE';r.continuous=false;r.interimResults=false;
-    r.onresult=e=>{
-      const heard=e.results[0][0].transcript;
-      resolve(calcFreeScore(target,heard));
-    };
-    r.onerror=()=>resolve({heard:'识别失败，请重试',words:[],overall:0,accuracy:0});
-    // Play blob back through audio element while recognizing
-    // Actually: we already have the recording, just run recognition on mic input
-    // Since blob is already recorded, we score based on what we can
-    r.start();
-    // Stop after 1s since audio is done
-    setTimeout(()=>{try{r.stop();}catch(e){}},1000);
-  });
+// ── Free mode scoring ────────────────────────────
+// Recognition result captured during recording
+let freeHeardText = '';
+
+function scoreFree(target, blob){
+  const heard = freeHeardText.trim();
+  if(!heard){
+    const fallbackWords = target.replace(/[.,!?;:'"„"]/g,'').split(/\s+/).map(w=>({word:w,score:0}));
+    return Promise.resolve({heard:'（未能识别，请重试）',words:fallbackWords,overall:0,accuracy:0});
+  }
+  return Promise.resolve(calcFreeScore(target, heard));
 }
 
 function calcFreeScore(target,heard){
