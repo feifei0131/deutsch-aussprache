@@ -377,6 +377,9 @@ function switchMode(mode) {
   document.getElementById('bar-comp-row').style.display = isFree ? 'none' : 'grid';
   document.getElementById('bar-pros-row').style.display = isFree ? 'none' : 'grid';
 
+  // Re-evaluate length hint for new mode
+  updateLengthHint(document.getElementById('input').value);
+
   // Reset results
   document.getElementById('results').classList.remove('on');
   // Restore hidden sections (may have been hidden in free mode)
