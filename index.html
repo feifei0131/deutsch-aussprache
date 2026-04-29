@@ -177,6 +177,8 @@
     </div>
   </div>
   <textarea id="input" rows="5" placeholder="Hallo, wie geht's Ihnen?" oninput="autoResize(this)"></textarea>
+  <div id="length-hint" style="font-size:.72rem;color:var(--muted);margin-top:6px;min-height:16px;"></div>
+
   <div class="char-btns">
     <span class="char-hint-lbl">插入：</span>
     <button class="char-btn" onclick="ins('ä')">ä</button>
@@ -257,6 +259,22 @@
 function autoResize(el){
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 320) + 'px';
+  updateLengthHint(el.value);
+}
+
+function updateLengthHint(text){
+  const hint = document.getElementById('length-hint');
+  if(!hint) return;
+  const sentences = (text.match(/[.!?。！？]+/g)||[]).length;
+  const chars = text.trim().length;
+  if(chars === 0){ hint.textContent = ''; hint.style.color = ''; return; }
+  if(sentences > 5 || chars > 300){
+    hint.innerHTML = '⚠️ 文本较长：播放发音和录音不受影响，但<strong>发音评分</strong>只能处理约前60秒，建议分段练习';
+    hint.style.color = 'var(--amber)';
+  } else {
+    hint.textContent = '';
+    hint.style.color = '';
+  }
 }
 
 async function pasteText(){
