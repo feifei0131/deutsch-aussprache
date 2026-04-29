@@ -206,8 +206,8 @@
         <div class="compare-col-hd free">🌐 免费模式</div>
         <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>完全免费，无需账号，国内畅通</div>
         <div class="compare-item"><div class="ci-dot" style="background:var(--green)"></div>录音 + 下载</div>
-        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>发音略显机械（系统 TTS）</div>
-        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>评分基于文字对比，无音素分析</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>发音由浏览器系统 TTS 生成，略显机械</div>
+        <div class="compare-item"><div class="ci-dot" style="background:var(--amber)"></div>不含发音评分功能</div>
       </div>
       <div>
         <div class="compare-col-hd azure">🎯 精准模式</div>
@@ -301,7 +301,7 @@
   <button class="btn btn-rec" id="btn-rec" onclick="toggleRec()">🎤 开始跟读</button>
 
   <!-- Mode indicator -->
-  <div class="mode-strip free" id="mode-strip-free">🌐 免费模式 · 浏览器发音 · 基础文字对比评分</div>
+  <div class="mode-strip free" id="mode-strip-free">🌐 免费模式 · 浏览器发音 · 录音下载 · 如需发音评分请切换精准模式</div>
   <div class="mode-strip azure" id="mode-strip-azure" style="display:none">🎯 精准模式 · Azure Neural TTS · 音素级发音评分</div>
 
   <div class="status" id="status"></div>
@@ -379,6 +379,13 @@ function switchMode(mode) {
 
   // Reset results
   document.getElementById('results').classList.remove('on');
+  // Restore hidden sections (may have been hidden in free mode)
+  const scoreRow = document.querySelector('.score-row');
+  const barsContainer = document.getElementById('bars-container');
+  const wordSec = document.querySelector('.word-sec');
+  if(scoreRow) scoreRow.style.display='';
+  if(barsContainer) barsContainer.style.display='';
+  if(wordSec) wordSec.style.display='';
   setStatus('');
 }
 
@@ -616,32 +623,6 @@ async function startRec(){
   setStatus('🎙 录音中… 读完后点"停止录音"');
   document.getElementById('results').classList.remove('on');
 
-  // Free mode: also run Web Speech recognition alongside recording
-  if(currentMode==='free'){
-    freeHeardText='';
-    startFreeRecognition();
-  }
-}
-
-let freeRecog=null;
-function startFreeRecognition(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR)return;
-  freeRecog=new SR();
-  freeRecog.lang='de-DE';
-  freeRecog.continuous=true;
-  freeRecog.interimResults=false;
-  freeRecog.onresult=e=>{
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal) freeHeardText+=e.results[i][0].transcript+' ';
-    }
-  };
-  freeRecog.onerror=e=>{ if(e.error!=='aborted'&&e.error!=='no-speech') console.log('recog:',e.error); };
-  freeRecog.onend=()=>{ if(isRec&&currentMode==='free'){ try{freeRecog.start();}catch(e){} } };
-  try{freeRecog.start();}catch(e){}
-}
-function stopFreeRecognition(){
-  if(freeRecog){ try{freeRecog.abort();}catch(e){} freeRecog=null; }
 }
 
 async function stopRec(){
@@ -650,9 +631,6 @@ async function stopRec(){
   const btn=document.getElementById('btn-rec');
   btn.textContent='🎤 开始跟读';btn.classList.remove('recording');
   btn.disabled=true;
-
-  // Stop free mode recognition
-  if(currentMode==='free') stopFreeRecognition();
 
   await new Promise(resolve=>{
     if(!mediaRec||mediaRec.state==='inactive'){resolve();return;}
@@ -673,9 +651,9 @@ async function stopRec(){
   try{
     const target=document.getElementById('input').value.trim();
     if(currentMode==='free'){
-      const result=await scoreFree(target,recBlob);
+      // Free mode: no assessment, just show playback options
       setStatus('');
-      showResultsFree(result,target);
+      showResultsFree(target);
     } else {
       const result=await azurePronAssess(recBlob,target);
       setStatus('');
@@ -687,18 +665,7 @@ async function stopRec(){
   btn.disabled=false;
 }
 
-// ── Free mode scoring ────────────────────────────
-// Recognition result captured during recording
-let freeHeardText = '';
-
-function scoreFree(target, blob){
-  const heard = freeHeardText.trim();
-  if(!heard){
-    const fallbackWords = target.replace(/[.,!?;:'"„"]/g,'').split(/\s+/).map(w=>({word:w,score:0}));
-    return Promise.resolve({heard:'（未能识别，请重试）',words:fallbackWords,overall:0,accuracy:0});
-  }
-  return Promise.resolve(calcFreeScore(target, heard));
-}
+// ── Free mode: no scoring ────────────────────────
 
 function calcFreeScore(target,heard){
   const normStr=s=>s.toLowerCase().replace(/[.,!?;:'"„"«»\-]/g,'').trim();
@@ -720,24 +687,18 @@ function calcFreeScore(target,heard){
   return{heard,words:origWords.map((w,i)=>({word:w,score:ws[i]??0})),overall,accuracy};
 }
 
-function showResultsFree(result,target){
-  document.getElementById('results').classList.add('on');
-  const on=document.getElementById('overall-num');
-  on.textContent=result.overall;on.className='overall-num '+colorOf(result.overall);
-  document.getElementById('score-cmt').textContent=commentOf(result.overall);
-  document.getElementById('score-mode-tag').textContent='🌐 免费模式评分（文字对比）';
-  setBar('acc',result.accuracy);
+function showResultsFree(target){
+  // Free mode: only show playback section, no scoring
+  const results = document.getElementById('results');
+  results.classList.add('on');
 
-  const chips=document.getElementById('chips');
-  chips.innerHTML='';
-  result.words.forEach(w=>{
-    const s=w.score;
-    const c=document.createElement('span');
-    c.className='chip '+(s>=75?'high':s>=50?'mid':s>10?'low':'miss');
-    c.innerHTML=w.word+'<span class="chip-score">'+s+'</span>';
-    chips.appendChild(c);
-  });
-  document.getElementById('pb-text').textContent=result.heard?'"'+result.heard+'"':'—';
+  // Hide score and word analysis sections
+  document.querySelector('.score-row').style.display='none';
+  document.getElementById('bars-container').style.display='none';
+  document.querySelector('.word-sec').style.display='none';
+
+  // Show a simple message instead
+  document.getElementById('pb-text').textContent='录音完成，可回放或下载。切换到精准模式可获得发音评分。';
 }
 
 // ── Azure WAV + Assessment ────────────────────────
